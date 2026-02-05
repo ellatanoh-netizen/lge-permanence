@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LGE - Droit et Justice | Permanence Opérationnelle</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --lge-green: #2e7d32;
+            --lge-light-green: #e8f5e9;
+            --lge-dark: #1b5e20;
+            --amber: #d97706;
+            --bg: #f8fafc;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --white: #ffffff;
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        .hidden { display: none !important; }
+
+        header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            padding: 16px 32px;
+            border-bottom: 2px solid var(--lge-green);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        #live-clock { text-align: right; }
+        #time-now { font-weight: 800; color: var(--lge-green); font-size: 1.2rem; display: block; }
+        #date-now { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+
+        #login-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 24px;
+            background: radial-gradient(circle at top left, #f0fdf4, #f8fafc);
+        }
+
+        .login-card {
+            background: var(--white);
+            width: 100%;
+            max-width: 440px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            border: 1px solid #f1f5f9;
+        }
+
+        .login-header {
+            background: var(--lge-green);
+            color: var(--white);
+            padding: 48px 32px;
+            text-align: center;
+        }
+
+        .login-body { padding: 40px 32px; }
+
+        .input-field, .select-field {
+            width: 100%;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            font-family: inherit;
+            font-weight: 500;
+            outline: none;
+            transition: all 0.2s ease;
+            background: #f8fafc;
+        }
+
+        .input-field:focus, .select-field:focus {
+            border-color: var(--lge-green);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.1);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: var(--lge-green);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: var(--lge-dark);
+            transform: translateY(-1px);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 32px auto;
+            padding: 0 24px;
+        }
+
+        .user-banner {
+            background: var(--white);
+            padding: 20px 24px;
+            border-radius: var(--radius-md);
+            margin-bottom: 32px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e2e8f0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .user-tag {
+            background: var(--lge-light-green);
+            color: var(--lge-dark);
+            padding: 6px 12px;
+            border-radius: 100px;
+            font-size: 12px;
+        }
+
+        .steps-box {
+            background: var(--white);
+            padding: 32px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid #f1f5f9;
+        }
+
+        .steps-box h3 {
+            margin: 0 0 24px 0;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--lge-green);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            text-align: center;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .step-item { text-align: center; }
+
+        .step-num {
+            width: 40px;
+            height: 40px;
+            background: var(--lge-light-green);
+            color: var(--lge-green);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 800;
+            margin: 0 auto 12px;
+        }
+
+        .step-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-main); }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card-action {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            border: 1px solid #f1f5f9;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-action:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--lge-green);
+        }
+
+        .title-card { font-weight: 800; font-size: 18px; color: var(--text-main); margin-bottom: 8px; }
+        .desc-card { font-size: 14px; color: var(--text-muted); font-weight: 500; }
+
+        .card-action::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #e2e8f0;
+            transition: background 0.3s;
+        }
+
+        .c-green:hover::after { background: var(--lge-green); }
+        .c-orange:hover::after { background: var(--amber); }
+        .c-dark { background: #1e293b; border: none; }
+        .c-dark .title-card { color: white; }
+        .c-dark .desc-card { color: #94a3b8; }
+        .c-dark:hover { background: #0f172a; }
+
+        .btn-logout {
+            margin: 48px 0;
+            padding: 20px;
+            background: #fff;
+            color: #ef4444;
+            border: 2px solid #fee2e2;
+            border-radius: var(--radius-md);
+            font-weight: 800;
+            text-transform: uppercase;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 24px;
+            backdrop-filter: blur(16px);
+        }
+
+        .form-container {
+            background: var(--white);
+            border-radius: 32px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .form-header {
+            background: var(--white);
+            padding: 28px 40px;
+            border-bottom: 1px solid #f1f5f9;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .form-header h2 { margin: 0; font-size: 20px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 12px; }
+
+        .form-section { padding: 40px; border-bottom: 1px solid #f1f5f9; }
+        .form-section-title { 
+            font-size: 11px; font-weight: 800; color: var(--lge-green); margin-bottom: 28px; 
+            text-transform: uppercase; letter-spacing: 2px; background: var(--lge-light-green);
+            display: inline-block; padding: 4px 12px; border-radius: 6px;
+        }
+
+        .form-group label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 10px; color: var(--text-main); }
+
+        .flux-box { background: #f0fdf4; border: 2px dashed #bbf7d0; padding: 24px; border-radius: var(--radius-md); }
+
+        .validation-box { background: #f8fafc; padding: 32px; border-radius: var(--radius-md); margin-bottom: 32px; border: 1.5px solid #e2e8f0; }
+
+        .check-item { display: flex; gap: 16px; align-items: center; cursor: pointer; margin-bottom: 16px; font-weight: 600; font-size: 14px; }
+        .check-item input { width: 22px; height: 22px; accent-color: var(--lge-green); }
+
+        .close-btn { background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 20px; font-weight: 600; }
+
+        @media (max-width: 600px) {
+            .grid-mobile { grid-template-columns: 1fr !important; }
+            .steps-grid { grid-template-columns: repeat(2, 1fr); }
+            header { padding: 12px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CONNEXION -->
+    <div id="login-screen">
+        <div class="login-card">
+            <div class="login-header">
+                <img src="https://lgedroitetjustice.fr/wp-content/uploads/2025/05/cropped-cropped-LOGO-2-282x300.png" height="90" alt="Logo LGE" style="filter: brightness(0) invert(1);">
+                <div style="margin-top:24px; font-weight:800; font-size:22px; letter-spacing:-0.5px;">LES GRAINES DE L'ESPOIR</div>
+                <div style="font-weight:500; opacity:0.8; font-size:16px; margin-top:4px;">Portail de Permanence</div>
+            </div>
+            <div class="login-body">
+                <div class="form-group">
+                    <label>Identifiant Bénévole</label>
+                    <input type="email" id="email-input" class="input-field" placeholder="nom@exemple.com">
+                </div>
+                <div class="form-group">
+                    <label>Type de permanence</label>
+                    <select id="permanence-type" class="select-field">
+                        <option value="classique">Permanence Classique</option>
+                        <option value="mobile_juridique">Permanence Mobile Juridique</option>
+                    </select>
+                </div>
+                <button class="btn-primary" onclick="demarrerPermanence()">Lancer la session</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="hidden">
+        <header>
+            <div style="display:flex; align-items:center; gap:16px;">
+                <img src="https://lgedroitetjustice.fr/wp-content/uploads/2025/05/cropped-cropped-LOGO-2-282x300.png" height="38">
+                <span style="font-weight:800; font-size:16px; letter-spacing:-0.3px;">PERMANENCE OPÉRATIONNELLE</span>
+            </div>
+            <div id="live-clock">
+                <span id="date-now"></span>
+                <span id="time-now"></span>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="user-banner">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <div style="width:10px; height:10px; background:#10b981; border-radius:50%"></div>
+                    <span>Session : <span id="user-display" class="user-tag"></span></span>
+                </div>
+                <div>Début : <span id="start-time-display"></span></div>
+            </div>
+
+            <!-- DASHBOARD CLASSIQUE -->
+            <div id="dashboard-classique" class="hidden">
+                <section class="steps-box">
+                    <h3>🛠️ Protocole de Traitement</h3>
+                    <div class="steps-grid">
+                        <div class="step-item"><div class="step-num">01</div><div class="step-label">Accueil</div></div>
+                        <div class="step-item"><div class="step-num">02</div><div class="step-label">Saisie</div></div>
+                        <div class="step-item"><div class="step-num">03</div><div class="step-label">Analyse</div></div>
+                        <div class="step-item"><div class="step-num">04</div><div class="step-label">Clôture</div></div>
+                    </div>
+                </section>
+                <div class="action-grid">
+                    <div onclick="openContactForm()" class="card-action c-green">
+                        <span class="title-card">📋 Fiche Contact</span>
+                        <span class="desc-card">Nouvelle visite ou appel.</span>
+                    </div>
+                    <a href="https://docs.google.com/spreadsheets/d/1HHgQbhCWtAS_LD93yFf9JncpuvCoXVod112bTr5wYmo/edit?usp=sharing" target="_blank" class="card-action c-green">
+                        <span class="title-card">📞 Annuaire Interne</span>
+                        <span class="desc-card">Contacts pôles et partenaires.</span>
+                    </a>
+                    <a href="https://forms.gle/efW4RKVZF3tnEFts8" target="_blank" class="card-action c-green">
+                        <span class="title-card">📝 Compte-rendu</span>
+                        <span class="desc-card">Bilan fin de vacation.</span>
+                    </a>
+                    <a href="https://drive.google.com/file/d/1ECDdNKRRwPsh5LN5Jq9xRC-cx6rvpOXz/view" target="_blank" class="card-action c-dark">
+                        <span class="title-card">⚖️ Protocole</span>
+                        <span class="desc-card">Cadre opérationnel.</span>
+                    </a>
+                    <a href="https://calendar.app.google/vmuAcu8KPvzkd5vC8" target="_blank" class="card-action c-orange">
+                        <span class="title-card">📅 Réserver un créneau</span>
+                        <span class="desc-card">Maison des Assos.</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- DASHBOARD MOBILE -->
+            <div id="dashboard-mobile" class="hidden">
+                <div class="action-grid">
+                    <div onclick="openMobileJuridiqueForm()" class="card-action c-green">
+                        <span class="title-card">🖋️ Dossier Mobile Juridique</span>
+                        <span class="desc-card">Nouvelle intervention itinérante.</span>
+                    </div>
+                    <a href="https://docs.google.com/spreadsheets/d/1HHgQbhCWtAS_LD93yFf9JncpuvCoXVod112bTr5wYmo/edit?usp=sharing" target="_blank" class="card-action c-green">
+                        <span class="title-card">📞 Annuaire Juridique</span>
+                        <span class="desc-card">Pôles et avocats.</span>
+                    </a>
+                    <a href="https://drive.google.com/file/d/1CiJANqE4y4xSXFPU842kEH-B6KxNVoL1/view" target="_blank" class="card-action c-dark">
+                        <span class="title-card">⚖️ Protocole Opérationnel</span>
+                        <span class="desc-card">Unité mobile.</span>
+                    </a>
+                    <a href="https://drive.google.com/file/d/1FIsLRBXEMoAzB21MkjwstZ-WUueROhuD/view" target="_blank" class="card-action c-orange">
+                        <span class="title-card">🗺️ Guide Mobiles</span>
+                        <span class="desc-card">Gestion itinérante.</span>
+                    </a>
+                    <a href="#" id="booking-mobile-link" target="_blank" class="card-action c-orange">
+                        <span class="title-card">📌 Réserver un créneau</span>
+                        <span class="desc-card">Tournée mobile.</span>
+                    </a>
+                </div>
+            </div>
+
+            <button class="btn-logout" onclick="confirmerDeconnexion()">Terminer la permanence</button>
+        </div>
+    </div>
+
+    <!-- MODAL CONTACT CLASSIQUE -->
+    <div id="contact-modal" class="modal-overlay hidden">
+        <div class="form-container">
+            <div class="form-header">
+                <h2>📋 Fiche de Contact</h2>
+                <button class="close-btn" onclick="closeContactForm()">&times;</button>
+            </div>
+            <form id="contact-form" onsubmit="submitContactForm(event)">
+                <div class="form-section">
+                    <div class="form-section-title">01 — Administration</div>
+                    <div class="grid-mobile" style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+                        <div class="form-group"><label>ID Fiche</label><input type="text" id="contact_fiche_id" readonly style="background:#f1f5f9" class="input-field"></div>
+                        <div class="form-group">
+                            <label>Nature</label>
+                            <select id="contact_nature" class="select-field" onchange="document.getElementById('contact_prev_box').className = (this.value==='Suivi' ? 'form-group' : 'form-group hidden')">
+                                <option>Premier contact</option>
+                                <option>Suivi</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="contact_prev_box" class="form-group hidden"><label>ID Fiche Précédente</label><input type="text" id="contact_prev_id" class="input-field"></div>
+                    <div class="form-group"><label>Nom Accueillant(e)</label><input type="text" id="accueillant" class="input-field" required></div>
+                    <div class="grid-mobile" style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+                        <div class="form-group"><label>Canal</label>
+                            <select id="canal" class="select-field"><option>Présentiel</option><option>Téléphone</option></select>
+                        </div>
+                        <div class="form-group"><label>Urgence</label>
+                            <select id="urgence" class="select-field"><option>Faible</option><option>Haute</option></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <div class="form-section-title">02 — Identification Public</div>
+                    <div class="form-group"><label>Identité (Prénom + Initiale)</label><input type="text" id="public_nom" class="input-field" required></div>
+                    <div class="grid-mobile" style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+                        <div class="form-group"><label>Téléphone</label><input type="tel" id="public_tel" class="input-field"></div>
+                        <div class="form-group"><label>E-mail</label><input type="email" id="public_email" class="input-field"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nature demande</label>
+                        <select id="demande_type" onchange="toggleFluxClassique()" class="select-field" required>
+                            <option value="beneficiaire">BESOIN D'AIDE</option>
+                            <option value="candidat">ENVIE D'AGIR</option>
+                            <option value="partenariat">PARTENARIAT</option>
+                            <option value="info">DEMANDE D'INFO</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-section" id="flux-container-classique">
+                    <div class="form-section-title">03 — Orientation Interne</div>
+                    <div id="flux-a-classique">
+                        <select id="orientation_a" class="select-field flux-box">
+                            <option value="">--- Soutien ---</option>
+                            <option>KOOM</option><option>CARELINE</option><option>Juridique</option><option>Psychologique</option>
+                        </select>
+                    </div>
+                    <div id="flux-b-classique" class="hidden">
+                        <select id="orientation_b" class="select-field flux-box">
+                            <option value="">--- Pôles ---</option>
+                            <option>Psychologie</option><option>Juridique</option><option>Terrain</option><option>Collectes</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <div class="validation-box">
+                        <label class="check-item"><input type="checkbox" required><span>Informations exactes</span></label>
+                        <label class="check-item"><input type="checkbox" required><span>Consentement RGPD</span></label>
+                    </div>
+                    <button type="submit" class="btn-primary">Enregistrer la Fiche</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL MOBILE JURIDIQUE -->
+    <div id="mobile-juridique-modal" class="modal-overlay hidden">
+        <div class="form-container">
+            <div class="form-header">
+                <h2>⚖️ Dossier Mobile Juridique</h2>
+                <button class="close-btn" onclick="closeMobileJuridiqueForm()">&times;</button>
+            </div>
+            <form id="mobile-juridique-form" onsubmit="submitMobileJuridiqueForm(event)">
+                <div class="form-section">
+                    <div class="form-section-title">00 — Références</div>
+                    <div class="grid-mobile" style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+                        <div class="form-group"><label>ID Unique</label><input type="text" id="mobile_id" readonly style="background:#f1f5f9" class="input-field"></div>
+                        <div class="form-group">
+                            <label>Nature</label>
+                            <select id="mobile_nature" class="select-field" onchange="document.getElementById('prev_id_box_mob').className = (this.value==='Suivi' ? 'form-group' : 'form-group hidden')">
+                                <option>Premier contact</option><option>Suivi</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="prev_id_box_mob" class="form-group hidden"><label>ID Précédent</label><input type="text" id="mobile_prev_id" class="input-field"></div>
+                    <div class="form-group"><label>Intervenant·e Principal</label><input type="text" id="mobile_intervenant" class="input-field" required></div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-section-title">04 — Profil & Situation</div>
+                    <div class="grid-mobile" style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+                        <div class="form-group"><label>Situation pro</label>
+                            <select id="mobile_statut_pro" class="select-field"><option>Sans emploi</option><option>Salarié</option><option>Etudiant</option></select>
+                        </div>
+                        <div class="form-group"><label>Enfants à charge</label><input type="number" id="mobile_enfants" class="input-field" min="0" value="0"></div>
+                    </div>
+                    <div class="form-group"><label>Situation Administrative</label>
+                        <select id="mobile_sit_admin" class="select-field" required>
+                            <option value="">— Sélection —</option>
+                            <option>Européen (UE)</option><option>Titre de séjour valide</option><option>Récépissé</option><option>Sans titre (OQTF)</option><option>Asile</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Ressources</label>
+                        <select id="mobile_ressources" class="select-field"><option>Aucune</option><option>Minima Sociaux</option><option>< SMIC</option><option>> SMIC</option></select>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-section-title">05 — Objet Juridique & Analyse</div>
+                    <div class="form-group"><label>Thématique</label>
+                        <select id="mobile_theme" class="select-field" required><option>Famille</option><option>Travail</option><option>Etrangers</option><option>Pénal</option></select>
+                    </div>
+                    <div class="form-group"><label>Objet litige</label><input type="text" id="mobile_objet" class="input-field" required></div>
+                    <div class="form-group"><label>Analyse (Confidentiel)</label><textarea id="mobile_synthese" rows="4" class="input-field" style="height:auto"></textarea></div>
+                    <div class="form-group"><label>Étapes conseillées</label><input type="text" id="mobile_etapes" class="input-field" required></div>
+                </div>
+
+                <div class="form-section">
+                    <div class="validation-box">
+                        <label class="check-item"><input type="checkbox" required><span>Certifie exactitude</span></label>
+                        <div class="form-group" style="margin-top:10px">
+                            <label>RGPD</label>
+                            <select id="mobile_rgpd" class="select-field" required><option>Recueilli</option><option>Refus</option></select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">Transmettre le Dossier</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL FIN SESSION -->
+    <div id="logout-modal" class="modal-overlay hidden">
+        <div class="form-container" style="max-width:460px; text-align:center; padding:56px; border-radius:40px;">
+            <h2 style="color:var(--lge-green); font-weight:800;">Session Clôturée</h2>
+            <p id="summary-text" style="font-size:14px; color:var(--text-muted); margin-bottom:32px; white-space:pre-line;"></p>
+            <button class="btn-primary" onclick="fermerTout()">Retourner à l'accueil</button>
+        </div>
+    </div>
+
+    <script>
+        const URL_DECOMPTE = "VOTRE_URL_SCRIPT_HEURES";
+        const URL_CONTACT  = "VOTRE_URL_SCRIPT_DOSSIERS";
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('date-now').innerText = now.toLocaleDateString('fr-FR', {weekday:'short', day:'numeric', month:'short'});
+            document.getElementById('time-now').innerText = now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+        }
+        setInterval(updateClock, 1000);
+
+        function demarrerPermanence() {
+            const email = document.getElementById('email-input').value.trim();
+            const pType = document.getElementById('permanence-type').value;
+            if (email.includes('@')) {
+                const now = new Date().toISOString();
+                localStorage.setItem('lge_active_email', email);
+                localStorage.setItem('lge_active_start', now);
+                localStorage.setItem('lge_permanence_type', pType);
+                lancerInterface(email, now, pType);
+            }
+        }
+
+        function lancerInterface(email, start, type) {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            document.getElementById('user-display').innerText = email;
+            document.getElementById('start-time-display').innerText = new Date(start).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+            document.getElementById('dashboard-classique').className = (type==='classique' ? '' : 'hidden');
+            document.getElementById('dashboard-mobile').className = (type==='mobile_juridique' ? '' : 'hidden');
+        }
+
+        function openContactForm() {
+            document.getElementById('contact_fiche_id').value = "CL-" + Date.now().toString().slice(-6);
+            document.getElementById('contact-modal').classList.remove('hidden');
+        }
+        function closeContactForm() { document.getElementById('contact-modal').classList.add('hidden'); }
+
+        function openMobileJuridiqueForm() {
+            document.getElementById('mobile_id').value = "MJ-" + Date.now().toString().slice(-6);
+            document.getElementById('mobile-juridique-modal').classList.remove('hidden');
+        }
+        function closeMobileJuridiqueForm() { document.getElementById('mobile-juridique-modal').classList.add('hidden'); }
+
+        async function submitContactForm(e) {
+            e.preventDefault();
+            const payload = {
+                type_permanence: "classique",
+                fiche_id: document.getElementById('contact_fiche_id').value,
+                nature: document.getElementById('contact_nature').value,
+                dossier_id: document.getElementById('contact_prev_id').value,
+                identite: document.getElementById('public_nom').value,
+                telephone: document.getElementById('public_tel').value,
+                email_contact: document.getElementById('public_email').value,
+                type_demande: document.getElementById('demande_type').value,
+                relecture_ok: true, rgpd_ok: true,
+                benevole_session: localStorage.getItem('lge_active_email'),
+                start_session: localStorage.getItem('lge_active_start')
+            };
+            await fetch(URL_CONTACT, {method:'POST', mode:'no-cors', body:JSON.stringify(payload)});
+            alert("Enregistré"); closeContactForm();
+        }
+
+        async function submitMobileJuridiqueForm(e) {
+            e.preventDefault();
+            const payload = {
+                type_permanence: "mobile_juridique",
+                fiche_id: document.getElementById('mobile_id').value,
+                nature: document.getElementById('mobile_nature').value,
+                dossier_id: document.getElementById('mobile_prev_id').value,
+                enfants: document.getElementById('mobile_enfants').value,
+                statut_pro: document.getElementById('mobile_statut_pro').value,
+                situation_admin: document.getElementById('mobile_sit_admin').value,
+                ressources: document.getElementById('mobile_ressources').value,
+                theme: document.getElementById('mobile_theme').value,
+                objet: document.getElementById('mobile_objet').value,
+                synthese: document.getElementById('mobile_synthese').value,
+                relecture_ok: true,
+                benevole_session: localStorage.getItem('lge_active_email'),
+                start_session: localStorage.getItem('lge_active_start')
+            };
+            await fetch(URL_CONTACT, {method:'POST', mode:'no-cors', body:JSON.stringify(payload)});
+            alert("Dossier Juridique Transmis"); closeMobileJuridiqueForm();
+        }
+
+        function confirmerDeconnexion() {
+            const start = new Date(localStorage.getItem('lge_active_start'));
+            const end = new Date();
+            const diff = end - start;
+            const hrs = Math.floor(diff / 3600000);
+            const mins = Math.floor((diff % 3600000) / 60000);
+            const durationStr = (hrs<10?"0"+hrs:hrs)+":"+(mins<10?"0"+mins:mins);
+            
+            document.getElementById('summary-text').innerText = "Bénévole: "+localStorage.getItem('lge_active_email')+"\nDurée: "+hrs+"h "+mins+"min";
+            document.getElementById('logout-modal').classList.remove('hidden');
+
+            fetch(URL_DECOMPTE, {method:'POST', mode:'no-cors', body:JSON.stringify({
+                email: localStorage.getItem('lge_active_email'),
+                duration: durationStr,
+                start: start.toLocaleString(),
+                end: end.toLocaleString()
+            })});
+        }
+
+        function fermerTout() { localStorage.clear(); location.reload(); }
+        window.onload = function() {
+            updateClock();
+            const email = localStorage.getItem('lge_active_email');
+            if (email) lancerInterface(email, localStorage.getItem('lge_active_start'), localStorage.getItem('lge_permanence_type'));
+        }
+    </script>
+</body>
+</html>
