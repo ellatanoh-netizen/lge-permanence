@@ -605,10 +605,10 @@
                                 <option>Autre</option>
                             </select>
                         </div>
-                        <!-- Champ Urgence -->
+                        <!-- Champ Urgence (corrigé) -->
                         <div style="margin-top:1rem;">
                             <label>Niveau d'urgence</label>
-                            <select id="benef-urgence" class="select" style="border-color: ${urgence === 'Haute' ? '#dc2626' : 'inherit'};">
+                            <select id="benef-urgence" class="select">
                                 <option value="Faible">Faible</option>
                                 <option value="Moyenne">Moyenne</option>
                                 <option value="Haute">Haute</option>
@@ -886,7 +886,7 @@
 
     <script>
         // ================== CONFIG ==================
-        const APPS_SCRIPT_URL = https://script.google.com/macros/s/AKfycbzLk1Wryy2yGnr5qp3FcaqnWX319DiLIh_wzXXky5SINwElHG31tDOQUXgHRMDP_4zz/exec
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLk1Wryy2yGnr5qp3FcaqnWX319DiLIh_wzXXky5SINwElHG31tDOQUXgHRMDP_4zz/exec";
 
         // ================== GESTION DE L'HORLOGE ==================
         function updateClock() {
