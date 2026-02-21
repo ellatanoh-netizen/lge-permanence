@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LGE - Permanence Opérationnelle</title>
+    <title>LGE - Droit et Justice | Permanence Opérationnelle</title>
     <style>
-        /* ========== STYLES GLOBAUX ========== */
+        /* ----- VARIABLES & RESET ----- */
         :root {
             --lge-green: #2e7d32;
             --lge-green-light: #e8f5e9;
             --lge-green-dark: #1b5e20;
+            --amber: #d97706;
             --bg: #f8fafc;
             --text-primary: #0f172a;
             --text-secondary: #64748b;
@@ -23,134 +24,269 @@
             --shadow-lg: 0 20px 30px -10px rgba(0,0,0,0.1);
             --transition: all 0.2s ease;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg);
             color: var(--text-primary);
             line-height: 1.5;
             min-height: 100vh;
         }
+        /* ----- UTILITAIRES ----- */
         .hidden { display: none !important; }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-4 { gap: 1rem; }
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-xs { font-size: 0.75rem; }
+        .font-bold { font-weight: 700; }
+        .font-semibold { font-weight: 600; }
+        .text-muted { color: var(--text-secondary); }
+        /* ----- COMPOSANTS ----- */
         .btn {
-            display: inline-flex; align-items: center; justify-content: center;
-            padding: 0.75rem 1.5rem; border-radius: var(--radius-md);
-            font-weight: 600; border: none; cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
             transition: var(--transition);
-            background: var(--white); color: var(--text-primary); border: 1px solid var(--border);
+            background-color: var(--white);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
         }
         .btn-primary {
-            background: var(--lge-green); color: white; border: none;
+            background-color: var(--lge-green);
+            color: white;
+            border: none;
             box-shadow: 0 2px 8px rgba(46,125,50,0.2);
         }
         .btn-primary:hover {
-            background: var(--lge-green-dark); transform: translateY(-2px);
+            background-color: var(--lge-green-dark);
+            transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(46,125,50,0.3);
         }
-        .btn-outline { background: transparent; }
-        .btn-outline:hover { background: #f1f5f9; }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+        }
+        .btn-outline:hover {
+            background: #f1f5f9;
+        }
+        .card {
+            background-color: var(--white);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
         .input, .select, textarea {
-            width: 100%; padding: 0.75rem 1rem;
-            border: 1.5px solid var(--border); border-radius: var(--radius-sm);
-            font-family: inherit; font-size: 0.95rem;
-            transition: var(--transition); background: var(--white);
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            background-color: var(--white);
         }
         .input:focus, .select:focus, textarea:focus {
+            outline: none;
             border-color: var(--lge-green);
             box-shadow: 0 0 0 3px rgba(46,125,50,0.1);
-            outline: none;
         }
-        label { font-weight: 600; font-size: 0.9rem; display: block; margin-bottom: 0.4rem; }
-        .section-title {
-            font-size: 0.8rem; text-transform: uppercase; font-weight: 700;
-            color: var(--lge-green); background: var(--lge-green-light);
-            display: inline-block; padding: 0.3rem 1rem; border-radius: 20px;
-            margin-bottom: 1.5rem;
+        label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: block;
+            margin-bottom: 0.4rem;
+            color: var(--text-primary);
         }
         .form-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem; margin-bottom: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
         }
-        /* ========== CONNEXION ========== */
+        .section-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+            color: var(--lge-green);
+            margin-bottom: 1.5rem;
+            background: var(--lge-green-light);
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+        }
+        /* ----- LAYOUT ----- */
         #login-screen {
-            display: flex; align-items: center; justify-content: center;
-            min-height: 100vh; padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
             background: radial-gradient(circle at 10% 20%, #f0fdf4, #f8fafc);
         }
         .login-card {
-            max-width: 480px; width: 100%; background: var(--white);
-            border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-lg);
+            max-width: 480px;
+            width: 100%;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
         }
         .login-header {
-            background: var(--lge-green); color: white; padding: 3rem 2rem; text-align: center;
+            background: var(--lge-green);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
         }
-        .login-body { padding: 2.5rem 2rem; }
-        /* ========== DASHBOARD ========== */
+        .login-body {
+            padding: 2.5rem 2rem;
+        }
+        /* dashboard */
         .app-header {
-            background: rgba(255,255,255,0.8); backdrop-filter: blur(12px);
-            padding: 1rem 2rem; border-bottom: 2px solid var(--lge-green);
-            display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 50;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(12px);
+            padding: 1rem 2rem;
+            border-bottom: 2px solid var(--lge-green);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
         }
-        .container { max-width: 1280px; margin: 2rem auto; padding: 0 2rem; }
+        .container {
+            max-width: 1280px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
         .session-info {
-            display: flex; gap: 1rem; flex-wrap: wrap;
-            background: var(--white); padding: 1rem 1.5rem;
-            border-radius: var(--radius-md); border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            background: var(--white);
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
             margin-bottom: 2rem;
+            font-size: 0.9rem;
         }
         .badge {
-            background: var(--lge-green-light); color: var(--lge-green-dark);
-            padding: 0.25rem 0.75rem; border-radius: 50px; font-weight: 600;
+            background: var(--lge-green-light);
+            color: var(--lge-green-dark);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.8rem;
         }
-        /* Onglets de navigation */
         .tab-bar {
-            display: flex; gap: 1rem; border-bottom: 2px solid var(--border);
-            margin-bottom: 2rem; padding-bottom: 0.5rem;
+            display: flex;
+            gap: 1rem;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
         }
         .tab {
-            padding: 0.5rem 1rem; font-weight: 600; cursor: pointer;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            cursor: pointer;
             border-radius: var(--radius-sm) var(--radius-sm) 0 0;
             transition: var(--transition);
         }
         .tab.active {
-            background: var(--lge-green-light); color: var(--lge-green-dark);
+            background: var(--lge-green-light);
+            color: var(--lge-green-dark);
             border-bottom: 3px solid var(--lge-green);
         }
-        /* Grille des actions */
         .action-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 1.5rem; margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
         }
         .action-card {
-            display: block; text-decoration: none; color: inherit;
-            background: var(--white); border-radius: var(--radius-md);
-            border: 1px solid var(--border); padding: 1.8rem 1.5rem;
-            transition: var(--transition); cursor: pointer;
-            position: relative; overflow: hidden;
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            background: var(--white);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            padding: 1.8rem 1.5rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
         }
         .action-card:hover {
-            transform: translateY(-4px); border-color: var(--lge-green);
+            transform: translateY(-4px);
+            border-color: var(--lge-green);
             box-shadow: var(--shadow-lg);
         }
         .action-card::after {
-            content: ''; position: absolute; bottom: 0; left: 0;
-            width: 100%; height: 4px; background: var(--border);
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--border);
             transition: background 0.2s;
         }
-        .action-card:hover::after { background: var(--lge-green); }
-        .action-title { font-weight: 700; font-size: 1.25rem; margin-bottom: 0.5rem; }
-        .action-desc { color: var(--text-secondary); font-size: 0.9rem; }
-        /* ========== MODALES ========== */
+        .action-card:hover::after {
+            background: var(--lge-green);
+        }
+        .action-title {
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .action-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        /* modales */
         .modal-overlay {
-            position: fixed; inset: 0; background: rgba(15,23,42,0.3);
-            backdrop-filter: blur(8px); display: flex; align-items: center;
-            justify-content: center; z-index: 1000; padding: 1.5rem;
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,0.3);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1.5rem;
         }
         .modal-container {
-            background: var(--white); border-radius: var(--radius-lg);
-            width: 100%; max-width: 1000px; max-height: 90vh;
-            overflow-y: auto; box-shadow: var(--shadow-lg);
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
             animation: modalFadeIn 0.2s ease;
         }
         @keyframes modalFadeIn {
@@ -158,401 +294,1566 @@
             to { opacity: 1; transform: scale(1); }
         }
         .modal-header {
-            padding: 1.5rem 2rem; border-bottom: 1px solid var(--border);
-            display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; background: var(--white); z-index: 10;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: var(--white);
+            z-index: 10;
         }
-        .modal-header h2 { font-size: 1.5rem; font-weight: 700; }
+        .modal-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
         .close-btn {
-            background: #f1f5f9; border: none; width: 40px; height: 40px;
-            border-radius: 50%; display: flex; align-items: center;
-            justify-content: center; font-size: 1.5rem; cursor: pointer;
+            background: #f1f5f9;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
         }
-        .modal-body { padding: 2rem; }
+        .close-btn:hover {
+            background: #e2e8f0;
+        }
+        .modal-body {
+            padding: 2rem;
+        }
         .form-section {
-            margin-bottom: 2.5rem; padding-bottom: 1.5rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
             border-bottom: 1px solid var(--border);
         }
-        .form-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
         .checkbox-label {
-            display: flex; align-items: center; gap: 0.75rem; font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 500;
             cursor: pointer;
         }
         .checkbox-label input[type="checkbox"] {
-            width: 1.2rem; height: 1.2rem; accent-color: var(--lge-green);
+            width: 1.2rem;
+            height: 1.2rem;
+            accent-color: var(--lge-green);
         }
         .btn-logout {
-            width: 100%; padding: 1rem; background: #fff; color: #ef4444;
-            border: 2px solid #fee2e2; border-radius: var(--radius-md);
-            font-weight: 700; text-transform: uppercase; cursor: pointer;
-            margin: 2rem 0 1rem;
+            width: 100%;
+            padding: 1rem;
+            background: #fff;
+            color: #ef4444;
+            border: 2px solid #fee2e2;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--transition);
+            margin: 3rem 0 1rem;
         }
-        .btn-logout:hover { background: #fee2e2; }
-        /* Assistant juridique */
+        .btn-logout:hover {
+            background: #fee2e2;
+        }
+        /* Styles pour le rapport juridique */
         .rapport-juridique {
-            background: #f0f9ff; border-left: 4px solid var(--lge-green);
-            padding: 1.5rem; border-radius: var(--radius-md); margin-top: 2rem;
+            background: #f0f9ff;
+            border-left: 4px solid var(--lge-green);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            margin-top: 2rem;
+            font-size: 0.95rem;
         }
         .rapport-juridique h4 {
-            color: var(--lge-green-dark); margin: 1rem 0 0.5rem;
-            font-size: 1rem; text-transform: uppercase;
+            color: var(--lge-green-dark);
+            margin: 1rem 0 0.5rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        .rapport-juridique ul { margin-left: 1.5rem; }
+        .rapport-juridique p {
+            margin: 0.5rem 0;
+        }
+        .rapport-juridique ul {
+            margin: 0.5rem 0 1rem 1.5rem;
+        }
+        .rapport-juridique li {
+            margin: 0.25rem 0;
+        }
         .rapport-juridique .source {
-            font-size: 0.85rem; color: var(--text-secondary);
-            border-top: 1px solid var(--border); margin-top: 1rem; padding-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border);
+            margin-top: 1rem;
+            padding-top: 1rem;
         }
-        .rapport-juridique a { color: var(--lge-green); text-decoration: none; }
-        .rapport-juridique a:hover { text-decoration: underline; }
-        /* Bien-être */
+        .rapport-juridique a {
+            color: var(--lge-green);
+            text-decoration: none;
+        }
+        .rapport-juridique a:hover {
+            text-decoration: underline;
+        }
+        /* Styles pour la section bien-être */
         .bienetre-container {
-            background: #fff3e0; border-radius: var(--radius-md);
-            padding: 1.5rem; margin: 1rem 0;
+            background: #fff3e0;
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin: 1rem 0;
         }
         .emojis-row {
-            display: flex; gap: 1rem; justify-content: space-around;
-            flex-wrap: wrap; margin: 1rem 0;
+            display: flex;
+            gap: 1rem;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 1rem 0;
         }
         .emoji-option {
-            display: flex; flex-direction: column; align-items: center;
-            cursor: pointer; padding: 0.5rem; border-radius: var(--radius-sm);
-            border: 2px solid transparent; transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            border: 2px solid transparent;
         }
         .emoji-option.selected {
-            border-color: var(--lge-green); background: var(--lge-green-light);
+            border-color: var(--lge-green);
+            background: var(--lge-green-light);
         }
-        .emoji-option span:first-child { font-size: 2rem; }
-        .emoji-option span:last-child { font-size: 0.8rem; font-weight: 600; }
+        .emoji-option span:first-child {
+            font-size: 2rem;
+        }
+        .emoji-option span:last-child {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
         .bienetre-reco {
-            background: white; padding: 1rem; border-radius: var(--radius-sm);
-            border-left: 4px solid var(--lge-green); margin-top: 1rem;
+            background: white;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            border-left: 4px solid var(--lge-green);
+            margin-top: 1rem;
         }
         @media (max-width: 640px) {
             .container { padding: 0 1rem; }
+            .app-header { padding: 1rem; }
             .modal-header { padding: 1rem 1.5rem; }
             .modal-body { padding: 1.5rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .modal-container { max-width: 100%; }
         }
     </style>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<!-- ========== ÉCRAN DE CONNEXION ========== -->
-<div id="login-screen">
-    <div class="login-card">
-        <div class="login-header">
-            <img src="https://lgedroitetjustice.fr/wp-content/uploads/2025/05/cropped-cropped-LOGO-2-282x300.png" height="90" alt="Logo LGE" style="filter: brightness(0) invert(1);">
-            <h1 style="margin:1.5rem 0 0.5rem; font-weight:800;">LES GRAINES DE L'ESPOIR</h1>
-            <p style="opacity:0.9;">Portail de Permanence</p>
-        </div>
-        <div class="login-body">
-            <form id="login-form" onsubmit="demarrerPermanence(event)">
-                <label>Email du bénévole</label>
-                <input type="email" id="email-input" class="input" placeholder="prenom.nom@lge.fr" required>
-                <label style="margin-top:1rem;">Type de permanence</label>
-                <select id="permanence-type" class="select" required>
-                    <option value="classique">Permanence Classique</option>
-                    <option value="mobile_juridique">Permanence Mobile Juridique</option>
-                </select>
-                <button type="submit" class="btn btn-primary" style="width:100%; margin-top:2rem;">Lancer la session</button>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- ========== DASHBOARD PRINCIPAL ========== -->
-<div id="dashboard" class="hidden">
-    <header class="app-header">
-        <div style="display:flex; align-items:center; gap:1rem;">
-            <img src="https://lgedroitetjustice.fr/wp-content/uploads/2025/05/cropped-cropped-LOGO-2-282x300.png" height="40">
-            <span class="font-bold">PERMANENCE OPÉRATIONNELLE</span>
-        </div>
-        <div id="live-clock" class="text-right">
-            <div id="date-now" class="text-xs text-muted"></div>
-            <div id="time-now" class="font-bold" style="color:var(--lge-green); font-size:1.2rem;"></div>
-        </div>
-    </header>
-
-    <div class="container">
-        <!-- Infos session -->
-        <div class="session-info">
-            <span class="badge" id="user-display"></span>
-            <span>🕒 Début : <span id="start-time-display"></span></span>
-            <span>📋 Type : <span id="permanence-type-display"></span></span>
-        </div>
-
-        <!-- Onglets de navigation -->
-        <div class="tab-bar">
-            <div class="tab active" data-tab="classique" onclick="switchTab('classique')">🏢 Permanence Classique</div>
-            <div class="tab" data-tab="mobile" onclick="switchTab('mobile')">🚐 Mobile Juridique</div>
-        </div>
-
-        <!-- Contenu de l'onglet Classique -->
-        <div id="tab-classique" class="tab-content">
-            <div class="action-grid">
-                <div onclick="openFicheContact()" class="action-card">
-                    <div class="action-title">📋 Nouvelle fiche contact</div>
-                    <div class="action-desc">Bénéficiaire, partenaire, bénévole, information</div>
-                </div>
-                <div onclick="openFicheJuridique()" class="action-card">
-                    <div class="action-title">⚖️ Fiche juridique approfondie</div>
-                    <div class="action-desc">Dossier détaillé pour situations complexes</div>
-                </div>
-                <a href="https://docs.google.com/spreadsheets/d/1HHgQbhCWtAS_LD93yFf9JncpuvCoXVod112bTr5wYmo/edit?usp=sharing" target="_blank" class="action-card">
-                    <div class="action-title">📞 Annuaire interne</div>
-                    <div class="action-desc">Contacts pôles et partenaires</div>
-                </a>
-                <a href="https://forms.gle/efW4RKVZF3tnEFts8" target="_blank" class="action-card">
-                    <div class="action-title">📝 Compte-rendu de vacation</div>
-                    <div class="action-desc">Bilan de fin de permanence</div>
-                </a>
-                <a href="https://drive.google.com/file/d/1ECDdNKRRwPsh5LN5Jq9xRC-cx6rvpOXz/view" target="_blank" class="action-card">
-                    <div class="action-title">⚖️ Protocole opérationnel</div>
-                    <div class="action-desc">Cadre et procédures</div>
-                </a>
-                <a href="https://calendar.app.google/vmuAcu8KPvzkd5vC8" target="_blank" class="action-card">
-                    <div class="action-title">📅 Réserver un créneau</div>
-                    <div class="action-desc">Maison des Associations</div>
-                </a>
-                <a href="https://wa.me/33784812030" target="_blank" class="action-card" style="border-color:#25D366;">
-                    <div class="action-title">📱 CARELINE WhatsApp</div>
-                    <div class="action-desc">Contacter l'équipe soutien</div>
-                </a>
+    <!-- ========== ÉCRAN DE CONNEXION ========== -->
+    <div id="login-screen">
+        <div class="login-card">
+            <div class="login-header">
+                <img src="https://lgedroitetjustice.fr/wp-content/uploads/2025/05/cropped-cropped-LOGO-2-282x300.png" height="90" alt="Logo LGE" style="filter: brightness(0) invert(1);">
+                <h1 style="margin-top:1.5rem; font-weight:800; font-size:1.8rem;">LES GRAINES DE L'ESPOIR</h1>
+                <p style="opacity:0.9; font-size:1rem;">Portail de Permanence</p>
+            </div>
+            <div class="login-body">
+                <form id="login-form" onsubmit="demarrerPermanence(event)">
+                    <div class="form-group">
+                        <label>Email du bénévole</label>
+                        <input type="email" id="email-input" class="input" placeholder="prenom.nom@lge.fr" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Type de permanence</label>
+                        <select id="permanence-type" class="select" required>
+                            <option value="classique">Permanence Classique</option>
+                            <option value="mobile_juridique">Permanence Mobile Juridique</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width:100%; margin-top:1rem;">Lancer la session</button>
+                </form>
             </div>
         </div>
+    </div>
 
-        <!-- Contenu de l'onglet Mobile -->
-        <div id="tab-mobile" class="tab-content hidden">
-            <div class="action-grid">
-                <div onclick="openFicheMobile()" class="action-card">
-                    <div class="action-title">⚖️ Dossier mobile juridique</div>
-                    <div class="action-desc">Intervention itinérante (avec assistant)</div>
+    <!-- ========== DASHBOARD PRINCIPAL ========== -->
+    <div id="dashboard" class="hidden">
+        <header class="app-header">
+            <div class="flex items-center gap-4">
+                <img src="https://lgedroitetjustice.fr/wp-content/uploads/2025/05/cropped-cropped-LOGO-2-282x300.png" height="40" alt="LGE">
+                <span class="font-bold" style="font-size:1.2rem;">PERMANENCE OPÉRATIONNELLE</span>
+            </div>
+            <div id="live-clock" class="text-right">
+                <div id="date-now" class="text-xs text-muted uppercase"></div>
+                <div id="time-now" class="font-bold text-lge-green" style="font-size:1.2rem;"></div>
+            </div>
+        </header>
+
+        <div class="container">
+            <!-- Infos session -->
+            <div class="session-info">
+                <div class="flex items-center gap-2">
+                    <span class="badge" id="user-display"></span>
+                    <span class="text-sm text-muted">Connecté(e)</span>
                 </div>
-                <a href="https://docs.google.com/spreadsheets/d/1HHgQbhCWtAS_LD93yFf9JncpuvCoXVod112bTr5wYmo/edit?usp=sharing" target="_blank" class="action-card">
-                    <div class="action-title">📞 Annuaire juridique</div>
-                    <div class="action-desc">Avocats, pôles, partenaires</div>
-                </a>
-                <a href="https://drive.google.com/file/d/1CiJANqE4y4xSXFPU842kEH-B6KxNVoL1/view" target="_blank" class="action-card">
-                    <div class="action-title">⚖️ Protocole mobile</div>
-                    <div class="action-desc">Procédure unité mobile</div>
-                </a>
-                <a href="https://drive.google.com/file/d/1FIsLRBXEMoAzB21MkjwstZ-WUueROhuD/view" target="_blank" class="action-card">
-                    <div class="action-title">🗺️ Guide mobiles</div>
-                    <div class="action-desc">Gestion itinérante</div>
-                </a>
-                <a href="#" id="booking-mobile-link" target="_blank" class="action-card">
-                    <div class="action-title">📌 Réserver un créneau</div>
-                    <div class="action-desc">Tournée mobile</div>
-                </a>
-                <a href="https://wa.me/33784812030" target="_blank" class="action-card" style="border-color:#25D366;">
-                    <div class="action-title">📱 CARELINE WhatsApp</div>
-                    <div class="action-desc">Contacter l'équipe soutien</div>
-                </a>
+                <div class="flex items-center gap-2">
+                    <span>🕒 Début :</span>
+                    <span class="font-semibold" id="start-time-display"></span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span>📋 Type :</span>
+                    <span class="font-semibold" id="permanence-type-display"></span>
+                </div>
+            </div>
+
+            <!-- Onglets de navigation -->
+            <div class="tab-bar">
+                <div class="tab active" data-tab="classique" onclick="switchTab('classique')">🏢 Permanence Classique</div>
+                <div class="tab" data-tab="mobile" onclick="switchTab('mobile')">🚐 Mobile Juridique</div>
+            </div>
+
+            <!-- Contenu onglet Classique -->
+            <div id="tab-classique" class="tab-content">
+                <div class="action-grid">
+                    <div onclick="openFicheContact()" class="action-card">
+                        <div class="action-title">📋 Nouvelle fiche contact</div>
+                        <div class="action-desc">Enregistrer une interaction (bénéficiaire, partenaire, etc.)</div>
+                    </div>
+                    <div onclick="openFicheJuridique()" class="action-card">
+                        <div class="action-title">⚖️ Fiche juridique approfondie</div>
+                        <div class="action-desc">Dossier détaillé pour situations complexes</div>
+                    </div>
+                    <a href="https://docs.google.com/spreadsheets/d/1HHgQbhCWtAS_LD93yFf9JncpuvCoXVod112bTr5wYmo/edit?usp=sharing" target="_blank" class="action-card">
+                        <div class="action-title">📞 Annuaire interne</div>
+                        <div class="action-desc">Contacts pôles et partenaires</div>
+                    </a>
+                    <a href="https://forms.gle/efW4RKVZF3tnEFts8" target="_blank" class="action-card">
+                        <div class="action-title">📝 Compte-rendu de vacation</div>
+                        <div class="action-desc">Bilan de fin de permanence</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/1ECDdNKRRwPsh5LN5Jq9xRC-cx6rvpOXz/view" target="_blank" class="action-card">
+                        <div class="action-title">⚖️ Protocole opérationnel</div>
+                        <div class="action-desc">Cadre et procédures</div>
+                    </a>
+                    <a href="https://calendar.app.google/vmuAcu8KPvzkd5vC8" target="_blank" class="action-card">
+                        <div class="action-title">📅 Réserver un créneau</div>
+                        <div class="action-desc">Maison des Associations</div>
+                    </a>
+                    <a href="https://wa.me/33784812030" target="_blank" class="action-card" style="border-color: #25D366;">
+                        <div class="action-title">📱 CARELINE WhatsApp</div>
+                        <div class="action-desc">Contacter l'équipe soutien</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Contenu onglet Mobile -->
+            <div id="tab-mobile" class="tab-content hidden">
+                <div class="action-grid">
+                    <div onclick="openFicheMobile()" class="action-card">
+                        <div class="action-title">⚖️ Dossier mobile juridique</div>
+                        <div class="action-desc">Nouvelle intervention itinérante (avec assistant)</div>
+                    </div>
+                    <a href="https://docs.google.com/spreadsheets/d/1HHgQbhCWtAS_LD93yFf9JncpuvCoXVod112bTr5wYmo/edit?usp=sharing" target="_blank" class="action-card">
+                        <div class="action-title">📞 Annuaire juridique</div>
+                        <div class="action-desc">Avocats, pôles, partenaires</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/1CiJANqE4y4xSXFPU842kEH-B6KxNVoL1/view" target="_blank" class="action-card">
+                        <div class="action-title">⚖️ Protocole mobile</div>
+                        <div class="action-desc">Procédure unité mobile</div>
+                    </a>
+                    <a href="https://drive.google.com/file/d/1FIsLRBXEMoAzB21MkjwstZ-WUueROhuD/view" target="_blank" class="action-card">
+                        <div class="action-title">🗺️ Guide mobiles</div>
+                        <div class="action-desc">Gestion itinérante</div>
+                    </a>
+                    <a href="#" id="booking-mobile-link" target="_blank" class="action-card">
+                        <div class="action-title">📌 Réserver un créneau</div>
+                        <div class="action-desc">Tournée mobile</div>
+                    </a>
+                    <a href="https://wa.me/33784812030" target="_blank" class="action-card" style="border-color: #25D366;">
+                        <div class="action-title">📱 CARELINE WhatsApp</div>
+                        <div class="action-desc">Contacter l'équipe soutien</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Boutons de contrôle -->
+            <div style="display: flex; gap:1rem; justify-content: space-between; margin-top: 2rem;">
+                <button class="btn btn-outline" onclick="changerPermanence()">🔄 Changer de permanence</button>
+                <button class="btn-logout" onclick="confirmerDeconnexion()">Terminer la permanence</button>
             </div>
         </div>
+    </div>
 
-        <!-- Boutons de contrôle -->
-        <div style="display:flex; gap:1rem; justify-content:space-between;">
-            <button class="btn btn-outline" onclick="changerPermanence()">🔄 Changer de permanence</button>
-            <button class="btn-logout" onclick="confirmerDeconnexion()">Terminer la permanence</button>
+    <!-- ========== MODALE FICHE CONTACT ========== -->
+    <div id="modal-fiche-contact" class="modal-overlay hidden">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>📋 Nouvelle fiche contact</h2>
+                <button class="close-btn" onclick="closeFicheContact()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="form-fiche-contact" onsubmit="submitFicheContact(event)">
+                    <!-- Section: Références -->
+                    <div class="form-section">
+                        <div class="section-title">01 — Références</div>
+                        <div class="form-grid">
+                            <div>
+                                <label>ID Fiche <span class="text-muted">(auto)</span></label>
+                                <input type="text" id="contact-id" readonly class="input" style="background:#f1f5f9;">
+                            </div>
+                            <div>
+                                <label>Nature</label>
+                                <select id="contact-nature" class="select">
+                                    <option value="Premier contact">Premier contact</option>
+                                    <option value="Suivi">Suivi</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="prev-id-container" class="hidden" style="margin-top:1rem;">
+                            <label>ID fiche précédente</label>
+                            <input type="text" id="contact-prev-id" class="input">
+                        </div>
+                    </div>
+
+                    <!-- Section: Type de demande (conditionne la suite) -->
+                    <div class="form-section">
+                        <div class="section-title">02 — Type de demande</div>
+                        <div>
+                            <label>Catégorie</label>
+                            <select id="contact-categorie" class="select" onchange="categorieChange()" required>
+                                <option value="">-- Sélectionnez --</option>
+                                <option value="beneficiaire">Bénéficiaire (demande d'aide)</option>
+                                <option value="partenaire">Partenaire / Prescripteur</option>
+                                <option value="benevole">Candidat bénévole</option>
+                                <option value="information">Demande d'information</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Section: Informations communes (toujours affichées) -->
+                    <div class="form-section">
+                        <div class="section-title">03 — Coordonnées</div>
+                        <div class="form-grid">
+                            <div>
+                                <label>Nom / Prénom ou Structure</label>
+                                <input type="text" id="contact-nom" class="input" required>
+                            </div>
+                            <div>
+                                <label>Téléphone</label>
+                                <input type="tel" id="contact-tel" class="input">
+                            </div>
+                            <div>
+                                <label>Email</label>
+                                <input type="email" id="contact-email" class="input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section Bénéficiaire (conditionnelle) -->
+                    <div id="section-beneficiaire" class="form-section hidden">
+                        <div class="section-title">04 — Informations sociales (bénéficiaire)</div>
+                        <div class="form-grid">
+                            <div>
+                                <label>Situation professionnelle</label>
+                                <select id="benef-situation-pro" class="select">
+                                    <option value="">-- Sélectionnez --</option>
+                                    <option>Sans emploi</option>
+                                    <option>CDI/CDD</option>
+                                    <option>Indépendant</option>
+                                    <option>Étudiant</option>
+                                    <option>Retraité</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Ressources</label>
+                                <select id="benef-ressources" class="select">
+                                    <option>Aucune</option>
+                                    <option>Minima sociaux (RSA, AAH)</option>
+                                    <option>< SMIC</option>
+                                    <option>> SMIC</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Nombre d'enfants à charge</label>
+                                <input type="number" id="benef-enfants" class="input" min="0" value="0">
+                            </div>
+                        </div>
+                        <div style="margin-top:1rem;">
+                            <label>Situation administrative</label>
+                            <select id="benef-situation-admin" class="select">
+                                <option value="">-- Sélectionnez --</option>
+                                <option>Européen (UE)</option>
+                                <option>Titre de séjour valide</option>
+                                <option>Récépissé</option>
+                                <option>Demande d'asile</option>
+                                <option>Sans titre (OQTF)</option>
+                            </select>
+                        </div>
+                        <div style="margin-top:1rem;">
+                            <label>Nature de la demande</label>
+                            <textarea id="benef-demande" class="input" rows="2" placeholder="Décrire brièvement la demande..."></textarea>
+                        </div>
+                        <div style="margin-top:1rem;">
+                            <label>Orientation proposée</label>
+                            <select id="benef-orientation" class="select">
+                                <option value="">-- Sélectionnez --</option>
+                                <option>Juridique</option>
+                                <option>Psychologique</option>
+                                <option>Social</option>
+                                <option>KOOM</option>
+                                <option>CARELINE</option>
+                                <option>Collectes</option>
+                                <option>Autre</option>
+                            </select>
+                        </div>
+                        <!-- Champ Urgence -->
+                        <div style="margin-top:1rem;">
+                            <label>Niveau d'urgence</label>
+                            <select id="benef-urgence" class="select">
+                                <option value="Faible">Faible</option>
+                                <option value="Moyenne">Moyenne</option>
+                                <option value="Haute">Haute</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Section Partenaire (conditionnelle) -->
+                    <div id="section-partenaire" class="form-section hidden">
+                        <div class="section-title">04 — Informations partenaire</div>
+                        <div class="form-grid">
+                            <div>
+                                <label>Nom de la structure</label>
+                                <input type="text" id="partenaire-structure" class="input">
+                            </div>
+                            <div>
+                                <label>Type de structure</label>
+                                <select id="partenaire-type" class="select">
+                                    <option>Association</option>
+                                    <option>Service public</option>
+                                    <option>Entreprise</option>
+                                    <option>Autre</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Personne de contact (prénom/nom)</label>
+                                <input type="text" id="partenaire-contact" class="input">
+                            </div>
+                        </div>
+                        <div style="margin-top:1rem;">
+                            <label>Nature du partenariat</label>
+                            <textarea id="partenaire-nature" class="input" rows="2" placeholder="Ex: convention, orientation mutuelle, mise à disposition..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Section Candidat bénévole (conditionnelle) -->
+                    <div id="section-benevole" class="form-section hidden">
+                        <div class="section-title">04 — Informations candidat bénévole</div>
+                        <div class="form-grid">
+                            <div>
+                                <label>Âge</label>
+                                <input type="number" id="benevole-age" class="input" min="18">
+                            </div>
+                            <div>
+                                <label>Profession / Compétences</label>
+                                <input type="text" id="benevole-competences" class="input">
+                            </div>
+                        </div>
+                        <div style="margin-top:1rem;">
+                            <label>Disponibilités</label>
+                            <input type="text" id="benevole-dispo" class="input" placeholder="ex: mercredi après-midi">
+                        </div>
+                        <div style="margin-top:1rem;">
+                            <label>Mission souhaitée</label>
+                            <select id="benevole-mission" class="select">
+                                <option>Accueil / Administration</option>
+                                <option>Juridique</option>
+                                <option>Terrain / Collectes</option>
+                                <option>Communication</option>
+                                <option>Autre</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Section Information simple (conditionnelle) -->
+                    <div id="section-information" class="form-section hidden">
+                        <div class="section-title">04 — Demande d'information</div>
+                        <div>
+                            <label>Sujet de la demande</label>
+                            <input type="text" id="info-sujet" class="input">
+                        </div>
+                        <div style="margin-top:1rem;">
+                            <label>Réponse apportée / informations transmises</label>
+                            <textarea id="info-reponse" class="input" rows="2"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Section Bien-être -->
+                    <div class="form-section">
+                        <div class="section-title">❤️ Bien-être de la personne</div>
+                        <div class="bienetre-container">
+                            <label>Comment la personne se sent-elle aujourd'hui ?</label>
+                            <div class="emojis-row" id="bienetre-emojis-contact">
+                                <div class="emoji-option" data-value="tres-bien" onclick="selectionnerEmotion('contact', 'tres-bien')"><span>😊</span><span>Très bien</span></div>
+                                <div class="emoji-option" data-value="bien" onclick="selectionnerEmotion('contact', 'bien')"><span>🙂</span><span>Bien</span></div>
+                                <div class="emoji-option" data-value="neutre" onclick="selectionnerEmotion('contact', 'neutre')"><span>😐</span><span>Neutre</span></div>
+                                <div class="emoji-option" data-value="mal" onclick="selectionnerEmotion('contact', 'mal')"><span>😔</span><span>Mal</span></div>
+                                <div class="emoji-option" data-value="tres-mal" onclick="selectionnerEmotion('contact', 'tres-mal')"><span>😢</span><span>Très mal</span></div>
+                            </div>
+                            <input type="hidden" id="bienetre-contact" value="">
+                            <div style="margin-top:1rem;">
+                                <label>Précisions (optionnel)</label>
+                                <textarea id="bienetre-contact-details" class="input" rows="2"></textarea>
+                            </div>
+                            <div id="bienetre-reco-contact" class="bienetre-reco"></div>
+                        </div>
+                    </div>
+
+                    <!-- Section: Validation -->
+                    <div class="form-section">
+                        <div class="section-title">05 — Validation</div>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="contact-valid" required>
+                            <span>Je certifie l'exactitude des informations et atteste avoir recueilli le consentement de la personne (RGPD).</span>
+                        </label>
+                    </div>
+
+                    <div style="display: flex; gap:1rem; justify-content: flex-end;">
+                        <button type="button" class="btn btn-outline" onclick="closeFicheContact()">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Enregistrer la fiche</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- ========== MODALES DES FORMULAIRES ========== -->
+    <!-- ========== MODALE FICHE MOBILE JURIDIQUE ========== -->
+    <div id="modal-fiche-mobile" class="modal-overlay hidden">
+        <div class="modal-container" style="max-width: 1000px;">
+            <div class="modal-header">
+                <h2>⚖️ Dossier mobile juridique</h2>
+                <button class="close-btn" onclick="closeFicheMobile()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="form-fiche-mobile" onsubmit="submitFicheMobile(event)">
+                    <!-- Section: Références -->
+                    <div class="form-section">
+                        <div class="section-title">01 — Références</div>
+                        <div class="form-grid">
+                            <div>
+                                <label>ID Dossier</label>
+                                <input type="text" id="mobile-id" readonly class="input" style="background:#f1f5f9;">
+                            </div>
+                            <div>
+                                <label>Nature</label>
+                                <select id="mobile-nature" class="select">
+                                    <option>Premier contact</option>
+                                    <option>Suivi</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="mobile-prev-container" class="hidden" style="margin-top:1rem;">
+                            <label>ID Dossier précédent</label>
+                            <input type="text" id="mobile-prev-id" class="input">
+                        </div>
+                        <div style="margin-top:1rem;">
+                            <label>Intervenant·e principal·e</label>
+                            <input type="text" id="mobile-intervenant" class="input" required>
+                        </div>
+                    </div>
 
-<!-- Fiche Contact (Classique) -->
-<div id="modal-fiche-contact" class="modal-overlay hidden">[... Ici, insérez la modale complète de la fiche contact (avec sections conditionnelles et bien-être) ...]</div>
+                    <!-- Section: Coordonnées -->
+                    <div class="form-section">
+                        <div class="section-title">02 — Personne accompagnée</div>
+                        <div class="form-grid">
+                            <div>
+                                <label>Nom / Prénom</label>
+                                <input type="text" id="mobile-nom" class="input" required>
+                            </div>
+                            <div>
+                                <label>Téléphone</label>
+                                <input type="tel" id="mobile-tel" class="input">
+                            </div>
+                            <div>
+                                <label>Email</label>
+                                <input type="email" id="mobile-email" class="input">
+                            </div>
+                        </div>
+                    </div>
 
-<!-- Fiche Mobile Juridique -->
-<div id="modal-fiche-mobile" class="modal-overlay hidden">[... Ici, insérez la modale complète de la fiche mobile juridique (avec assistant et bien-être) ...]</div>
+                    <!-- Section: Profil -->
+                    <div class="form-section">
+                        <div class="section-title">03 — Profil et situation</div>
+                        <div class="form-grid">
+                            <div>
+                                <label>Situation professionnelle</label>
+                                <select id="mobile-situation-pro" class="select">
+                                    <option>Sans emploi</option>
+                                    <option>Salarié</option>
+                                    <option>Indépendant</option>
+                                    <option>Étudiant</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Enfants à charge</label>
+                                <input type="number" id="mobile-enfants" class="input" min="0" value="0">
+                            </div>
+                        </div>
+                        <div style="margin-top:1rem;">
+                            <label>Situation administrative</label>
+                            <select id="mobile-situation-admin" class="select" required>
+                                <option value="">-- Sélectionnez --</option>
+                                <option>Européen (UE)</option>
+                                <option>Titre de séjour valide</option>
+                                <option>Récépissé</option>
+                                <option>Demande d'asile</option>
+                                <option>Sans titre (OQTF)</option>
+                            </select>
+                        </div>
+                        <div style="margin-top:1rem;">
+                            <label>Ressources</label>
+                            <select id="mobile-ressources" class="select">
+                                <option>Aucune</option>
+                                <option>Minima sociaux</option>
+                                <option>< SMIC</option>
+                                <option>> SMIC</option>
+                            </select>
+                        </div>
+                    </div>
 
-<!-- Fiche Juridique Approfondie (Classique) -->
-<div id="modal-fiche-juridique" class="modal-overlay hidden">[... Ici, insérez la modale complète de la fiche juridique approfondie (très longue, avec assistant et bien-être) ...]</div>
+                    <!-- Section: Juridique -->
+                    <div class="form-section">
+                        <div class="section-title">04 — Dossier juridique</div>
+                        <div class="form-grid">
+                            <div>
+                                <label>Thématique</label>
+                                <select id="mobile-theme" class="select" required>
+                                    <option>Famille</option>
+                                    <option>Travail</option>
+                                    <option>Étrangers</option>
+                                    <option>Pénal</option>
+                                    <option>Logement</option>
+                                    <option>Consommation</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Objet du litige</label>
+                                <input type="text" id="mobile-objet" class="input" required>
+                            </div>
+                        </div>
+                        <div style="margin-top:1rem;">
+                            <label>Analyse confidentielle</label>
+                            <textarea id="mobile-analyse" class="input" rows="3"></textarea>
+                        </div>
+                        <div style="margin-top:1rem;">
+                            <label>Étapes conseillées / actions réalisées</label>
+                            <textarea id="mobile-etapes" class="input" rows="2"></textarea>
+                        </div>
+                        <div style="margin-top:1rem;">
+                            <label>Aide juridictionnelle ?</label>
+                            <select id="mobile-aj" class="select">
+                                <option>Non</option>
+                                <option>Demande en cours</option>
+                                <option>Accordée</option>
+                                <option>Refusée</option>
+                            </select>
+                        </div>
+                        <div style="margin-top:1rem;">
+                            <label>Structure relais (si orientation)</label>
+                            <input type="text" id="mobile-relais" class="input" placeholder="Nom du partenaire">
+                        </div>
+                        <!-- Champ Urgence pour mobile -->
+                        <div style="margin-top:1rem;">
+                            <label>Niveau d'urgence</label>
+                            <select id="mobile-urgence" class="select">
+                                <option value="Faible">Faible</option>
+                                <option value="Moyenne">Moyenne</option>
+                                <option value="Haute">Haute</option>
+                            </select>
+                        </div>
+                    </div>
 
-<!-- Modale Fin de Session -->
-<div id="modal-logout" class="modal-overlay hidden">
-    <div class="modal-container" style="max-width:480px; text-align:center; padding:2rem;">
-        <h2 style="color:var(--lge-green); font-weight:800;">Session terminée</h2>
-        <p id="logout-summary" style="margin:2rem 0;"></p>
-        <button class="btn btn-primary" onclick="fermerTout()">Retour à l'accueil</button>
+                    <!-- Section Bien-être pour mobile -->
+                    <div class="form-section">
+                        <div class="section-title">❤️ Bien-être de la personne</div>
+                        <div class="bienetre-container">
+                            <label>Comment la personne se sent-elle aujourd'hui ?</label>
+                            <div class="emojis-row" id="bienetre-emojis-mobile">
+                                <div class="emoji-option" data-value="tres-bien" onclick="selectionnerEmotion('mobile', 'tres-bien')"><span>😊</span><span>Très bien</span></div>
+                                <div class="emoji-option" data-value="bien" onclick="selectionnerEmotion('mobile', 'bien')"><span>🙂</span><span>Bien</span></div>
+                                <div class="emoji-option" data-value="neutre" onclick="selectionnerEmotion('mobile', 'neutre')"><span>😐</span><span>Neutre</span></div>
+                                <div class="emoji-option" data-value="mal" onclick="selectionnerEmotion('mobile', 'mal')"><span>😔</span><span>Mal</span></div>
+                                <div class="emoji-option" data-value="tres-mal" onclick="selectionnerEmotion('mobile', 'tres-mal')"><span>😢</span><span>Très mal</span></div>
+                            </div>
+                            <input type="hidden" id="bienetre-mobile" value="">
+                            <div style="margin-top:1rem;">
+                                <label>Précisions (optionnel)</label>
+                                <textarea id="bienetre-mobile-details" class="input" rows="2"></textarea>
+                            </div>
+                            <div id="bienetre-reco-mobile" class="bienetre-reco"></div>
+                        </div>
+                    </div>
+
+                    <!-- Section: Validation RGPD -->
+                    <div class="form-section">
+                        <div class="section-title">06 — Validation</div>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="mobile-valid" required>
+                            <span>Je certifie l'exactitude des informations et atteste avoir recueilli le consentement (RGPD).</span>
+                        </label>
+                        <div style="margin-top:1rem;">
+                            <label>Consentement RGPD</label>
+                            <select id="mobile-rgpd" class="select">
+                                <option>Consentement recueilli</option>
+                                <option>Refus de consentement</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Boutons d'action : Analyse et envoi -->
+                    <div style="display: flex; gap:1rem; justify-content: space-between; margin: 2rem 0;">
+                        <button type="button" class="btn btn-outline" onclick="analyserFicheMobile()">🔍 Analyser la situation</button>
+                        <div>
+                            <button type="button" class="btn btn-outline" onclick="closeFicheMobile()">Annuler</button>
+                            <button type="submit" class="btn btn-primary">Transmettre le dossier</button>
+                        </div>
+                    </div>
+
+                    <!-- Zone d'affichage du rapport juridique -->
+                    <div id="rapport-mobile"></div>
+                </form>
+            </div>
+        </div>
     </div>
-</div>
 
-<script>
-    // ========== CONFIGURATION ==========
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLk1Wryy2yGnr5qp3FcaqnWX319DiLIh_wzXXky5SINwElHG31tDOQUXgHRMDP_4zz/exec";
+    <!-- ========== MODALE FICHE JURIDIQUE APPROFONDIE ========== -->
+    <div id="modal-fiche-juridique" class="modal-overlay hidden">
+        <div class="modal-container" style="max-width: 1000px;">
+            <div class="modal-header">
+                <h2>⚖️ Fiche juridique approfondie</h2>
+                <button class="close-btn" onclick="closeFicheJuridique()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="form-fiche-juridique" onsubmit="submitFicheJuridique(event)">
+                    <!-- Section identité -->
+                    <div class="form-section">
+                        <div class="section-title">01 — Identité</div>
+                        <div class="form-grid">
+                            <div><label>Nom</label><input type="text" id="juridique-nom" class="input" required></div>
+                            <div><label>Prénom</label><input type="text" id="juridique-prenom" class="input" required></div>
+                            <div><label>Date naissance</label><input type="date" id="juridique-date-naissance" class="input"></div>
+                            <div><label>Lieu naissance</label><input type="text" id="juridique-lieu-naissance" class="input"></div>
+                            <div><label>Nationalité</label><input type="text" id="juridique-nationalite" class="input"></div>
+                            <div><label>Pays provenance</label><input type="text" id="juridique-pays-provenance" class="input"></div>
+                            <div><label>Téléphone</label><input type="tel" id="juridique-telephone" class="input"></div>
+                            <div><label>Email</label><input type="email" id="juridique-email" class="input"></div>
+                        </div>
+                    </div>
 
-    // ========== GESTION DE L'HORLOGE ==========
-    function updateClock() {
-        const now = new Date();
-        document.getElementById('date-now').innerText = now.toLocaleDateString('fr-FR', { weekday:'short', day:'numeric', month:'short' });
-        document.getElementById('time-now').innerText = now.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
-    }
-    setInterval(updateClock, 1000);
+                    <!-- Section situation -->
+                    <div class="form-section">
+                        <div class="section-title">02 — Situation</div>
+                        <div class="form-grid">
+                            <div><label>Situation logement</label><input type="text" id="juridique-logement" class="input"></div>
+                            <div><label>Arrivée avec visa ?</label><input type="checkbox" id="juridique-arrivee-avec-visa"></div>
+                            <div><label>Arrivée sans visa ?</label><input type="checkbox" id="juridique-arrivee-sans-visa"></div>
+                            <div><label>Date entrée</label><input type="date" id="juridique-date-entree" class="input"></div>
+                            <div><label>Frontière entrée</label><input type="text" id="juridique-frontiere-entree" class="input"></div>
+                            <div><label>Visas passés</label><input type="text" id="juridique-visas-passes" class="input"></div>
+                        </div>
+                        <div class="form-grid">
+                            <div><label>Conjoint français ?</label><input type="checkbox" id="juridique-conjoint-francais"></div>
+                            <div><label>Conjoint étranger régulier ?</label><input type="checkbox" id="juridique-conjoint-regulier"></div>
+                            <div><label>Conjoint étranger irrégulier ?</label><input type="checkbox" id="juridique-conjoint-irregulier"></div>
+                            <div><label>Date mariage</label><input type="date" id="juridique-date-mariage" class="input"></div>
+                            <div><label>Lieu mariage</label><input type="text" id="juridique-lieu-mariage" class="input"></div>
+                        </div>
+                        <div class="form-grid">
+                            <div><label>A des enfants ?</label><input type="checkbox" id="juridique-a-enfants"></div>
+                            <div><label>Enfants nés France ?</label><input type="checkbox" id="juridique-enfants-nes-france"></div>
+                            <div><label>Au moins un enfant français ?</label><input type="checkbox" id="juridique-enfant-francais"></div>
+                            <div><label>Détails enfants</label><textarea id="juridique-enfants-details" class="input" rows="2"></textarea></div>
+                        </div>
+                        <div class="form-grid">
+                            <div><label>A déjà eu titre ?</label><input type="checkbox" id="juridique-deja-titre"></div>
+                            <div><label>Titres précédents</label><input type="text" id="juridique-titres-precedents" class="input"></div>
+                            <div><label>Récépissé en cours ?</label><input type="checkbox" id="juridique-recipisse"></div>
+                            <div><label>N° récépissé</label><input type="text" id="juridique-numero-recipisse" class="input"></div>
+                        </div>
+                        <div class="form-grid">
+                            <div><label>OQTF reçue ?</label><input type="checkbox" id="juridique-oqtf-recue"></div>
+                            <div><label>Date OQTF</label><input type="date" id="juridique-date-oqtf" class="input"></div>
+                            <div><label>Recours exercé ?</label><input type="checkbox" id="juridique-recours-exerce"></div>
+                            <div><label>Refus de séjour ?</label><input type="checkbox" id="juridique-refus-sejour"></div>
+                            <div><label>Date refus</label><input type="date" id="juridique-date-refus" class="input"></div>
+                            <div><label>Motif refus</label><input type="text" id="juridique-motif-refus" class="input"></div>
+                        </div>
+                        <div class="form-grid">
+                            <div><label>Convocation préfecture ?</label><input type="checkbox" id="juridique-convocation"></div>
+                            <div><label>Date convocation</label><input type="date" id="juridique-date-convocation" class="input"></div>
+                            <div><label>N° dossier préfecture</label><input type="text" id="juridique-numero-dossier-pref" class="input"></div>
+                            <div><label>Autre mesure</label><input type="text" id="juridique-autre-mesure" class="input"></div>
+                        </div>
+                    </div>
 
-    // ========== CONNEXION / SESSION ==========
-    function demarrerPermanence(e) {
-        e.preventDefault();
-        const email = document.getElementById('email-input').value.trim();
-        const type = document.getElementById('permanence-type').value;
-        if (!email.includes('@')) { alert("Email valide requis"); return; }
-        const now = new Date();
-        localStorage.setItem('lge_email', email);
-        localStorage.setItem('lge_start', now.toISOString());
-        localStorage.setItem('lge_type', type);
-        lancerInterface(email, now, type);
-    }
+                    <!-- Section travail -->
+                    <div class="form-section">
+                        <div class="section-title">03 — Travail</div>
+                        <div class="form-grid">
+                            <div><label>Travail déclaré ?</label><input type="checkbox" id="juridique-travail-declare"></div>
+                            <div><label>Travail non déclaré ?</label><input type="checkbox" id="juridique-travail-non-declare"></div>
+                            <div><label>Secteur activité</label><input type="text" id="juridique-secteur-activite" class="input"></div>
+                            <div><label>Ancienneté</label><input type="text" id="juridique-anciennete" class="input"></div>
+                            <div><label>Employeur</label><input type="text" id="juridique-employeur" class="input"></div>
+                            <div><label>Salaire</label><input type="text" id="juridique-salaire" class="input"></div>
+                            <div><label>Temps travail</label><input type="text" id="juridique-temps-travail" class="input"></div>
+                            <div><label>Type contrat</label><input type="text" id="juridique-type-contrat" class="input"></div>
+                            <div><label>Promesse embauche ?</label><input type="checkbox" id="juridique-promesse-embauche"></div>
+                            <div><label>Preuves travail</label><textarea id="juridique-preuves-travail" class="input" rows="2"></textarea></div>
+                        </div>
+                    </div>
 
-    function lancerInterface(email, start, type) {
-        document.getElementById('login-screen').classList.add('hidden');
-        document.getElementById('dashboard').classList.remove('hidden');
-        document.getElementById('user-display').innerText = email;
-        document.getElementById('start-time-display').innerText = start.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
-        document.getElementById('permanence-type-display').innerText = type === 'classique' ? 'Classique' : 'Mobile Juridique';
+                    <!-- Section violences -->
+                    <div class="form-section">
+                        <div class="section-title">04 — Violences</div>
+                        <div class="form-grid">
+                            <div><label>Victime violences ?</label><input type="checkbox" id="juridique-victime-violences"></div>
+                            <div><label>Auteur violences</label><input type="text" id="juridique-auteur-violences" class="input"></div>
+                            <div><label>Nature violences</label><textarea id="juridique-nature-violences" class="input" rows="2"></textarea></div>
+                            <div><label>Période violences</label><input type="text" id="juridique-periode-violences" class="input"></div>
+                        </div>
+                        <div class="form-grid">
+                            <div><label>Plainte déposée ?</label><input type="checkbox" id="juridique-plainte"></div>
+                            <div><label>Lieu plainte</label><input type="text" id="juridique-lieu-plainte" class="input"></div>
+                            <div><label>Ordonnance protection ?</label><input type="checkbox" id="juridique-ordonnance-protection"></div>
+                            <div><label>Juge durée</label><input type="text" id="juridique-juge-duree" class="input"></div>
+                            <div><label>Certificats médicaux ?</label><input type="checkbox" id="juridique-certificats"></div>
+                            <div><label>Dates certificats</label><input type="text" id="juridique-dates-certificats" class="input"></div>
+                            <div><label>Séparée auteur ?</label><input type="checkbox" id="juridique-separee"></div>
+                            <div><label>Autres preuves</label><textarea id="juridique-autres-preuves" class="input" rows="2"></textarea></div>
+                            <div><label>Suivi association</label><input type="text" id="juridique-suivi-association" class="input"></div>
+                            <div><label>Enfants concernés ?</label><input type="checkbox" id="juridique-enfants-concernes"></div>
+                        </div>
+                        <div class="form-grid">
+                            <div><label>Parent enfant français ?</label><input type="checkbox" id="juridique-parent-enfant-francais"></div>
+                            <div><label>Nom enfant français</label><input type="text" id="juridique-nom-enfant-francais" class="input"></div>
+                            <div><label>N° carte enfant</label><input type="text" id="juridique-numero-carte-enfant" class="input"></div>
+                            <div><label>Preuves contribution</label><textarea id="juridique-preuves-contribution" class="input" rows="2"></textarea></div>
+                        </div>
+                    </div>
 
-        // Afficher le bon onglet par défaut
-        if (type === 'classique') {
-            switchTab('classique');
-        } else {
-            switchTab('mobile');
+                    <!-- Section ancienneté / santé -->
+                    <div class="form-section">
+                        <div class="section-title">05 — Ancienneté et santé</div>
+                        <div class="form-grid">
+                            <div><label>Présence ancienne (≥10 ans) ?</label><input type="checkbox" id="juridique-presence-ancienne"></div>
+                            <div><label>Preuves présence</label><textarea id="juridique-preuves-presence" class="input" rows="2"></textarea></div>
+                            <div><label>Années manquantes</label><input type="text" id="juridique-annees-manquantes" class="input"></div>
+                            <div><label>Raisons santé ?</label><input type="checkbox" id="juridique-raisons-sante"></div>
+                            <div><label>Maladie</label><input type="text" id="juridique-maladie" class="input"></div>
+                            <div><label>Suivi médical</label><input type="text" id="juridique-suivi-medical" class="input"></div>
+                            <div><label>Certificat mentionne impossibilité soins ?</label><input type="checkbox" id="juridique-certificat-impossibilite"></div>
+                        </div>
+                    </div>
+
+                    <!-- Section asile -->
+                    <div class="form-section">
+                        <div class="section-title">06 — Asile</div>
+                        <div class="form-grid">
+                            <div><label>Demande asile ?</label><input type="checkbox" id="juridique-demande-asile"></div>
+                            <div><label>Date dépôt asile</label><input type="date" id="juridique-date-depot-asile" class="input"></div>
+                            <div><label>Décision OFPRA</label><input type="text" id="juridique-decision-ofpra" class="input"></div>
+                        </div>
+                    </div>
+
+                    <!-- Section liens France / intégration -->
+                    <div class="form-section">
+                        <div class="section-title">07 — Liens avec la France</div>
+                        <div class="form-grid">
+                            <div><label>Liens familiaux France</label><textarea id="juridique-liens-familiaux" class="input" rows="2"></textarea></div>
+                            <div><label>Intégration</label><textarea id="juridique-integration" class="input" rows="2"></textarea></div>
+                        </div>
+                    </div>
+
+                    <!-- Section urgence -->
+                    <div class="form-section">
+                        <div class="section-title">08 — Urgence et danger</div>
+                        <div class="form-grid">
+                            <div><label>Urgence OQTF ?</label><input type="checkbox" id="juridique-urgence-oqtf"></div>
+                            <div><label>Évaluation danger</label><textarea id="juridique-evaluation-danger" class="input" rows="2"></textarea></div>
+                            <div><label>Danger immédiat ?</label><input type="checkbox" id="juridique-danger-immediat"></div>
+                            <div><label>Mesures protection</label><textarea id="juridique-mesures-protection" class="input" rows="2"></textarea></div>
+                            <div><label>Hébergement urgence nécessaire ?</label><input type="checkbox" id="juridique-hebergement-urgence"></div>
+                            <div><label>Contact urgence</label><input type="text" id="juridique-contact-urgence" class="input"></div>
+                        </div>
+                    </div>
+
+                    <!-- Section résumé / notes -->
+                    <div class="form-section">
+                        <div class="section-title">09 — Synthèse</div>
+                        <div class="form-grid">
+                            <div><label>Documents (résumé)</label><textarea id="juridique-documents-resume" class="input" rows="2"></textarea></div>
+                            <div><label>Résumé automatique</label><textarea id="juridique-resume-auto" class="input" rows="2" readonly style="background:#f1f5f9;"></textarea></div>
+                            <div><label>Orientation proposée</label><input type="text" id="juridique-orientation" class="input"></div>
+                            <div><label>Notes complémentaires</label><textarea id="juridique-notes" class="input" rows="2"></textarea></div>
+                        </div>
+                    </div>
+
+                    <!-- Section bien-être -->
+                    <div class="form-section">
+                        <div class="section-title">❤️ Bien-être de la personne</div>
+                        <div class="bienetre-container">
+                            <label>Comment la personne se sent-elle aujourd'hui ?</label>
+                            <div class="emojis-row" id="bienetre-emojis-juridique">
+                                <div class="emoji-option" data-value="tres-bien" onclick="selectionnerEmotion('juridique', 'tres-bien')"><span>😊</span><span>Très bien</span></div>
+                                <div class="emoji-option" data-value="bien" onclick="selectionnerEmotion('juridique', 'bien')"><span>🙂</span><span>Bien</span></div>
+                                <div class="emoji-option" data-value="neutre" onclick="selectionnerEmotion('juridique', 'neutre')"><span>😐</span><span>Neutre</span></div>
+                                <div class="emoji-option" data-value="mal" onclick="selectionnerEmotion('juridique', 'mal')"><span>😔</span><span>Mal</span></div>
+                                <div class="emoji-option" data-value="tres-mal" onclick="selectionnerEmotion('juridique', 'tres-mal')"><span>😢</span><span>Très mal</span></div>
+                            </div>
+                            <input type="hidden" id="bienetre-juridique" value="">
+                            <div style="margin-top:1rem;"><label>Précisions</label><textarea id="bienetre-juridique-details" class="input" rows="2"></textarea></div>
+                            <div id="bienetre-reco-juridique" class="bienetre-reco"></div>
+                        </div>
+                    </div>
+
+                    <!-- Section validation -->
+                    <div class="form-section">
+                        <div class="section-title">10 — Validation</div>
+                        <label class="checkbox-label"><input type="checkbox" id="juridique-valid" required> Je certifie l'exactitude des informations et atteste avoir recueilli le consentement (RGPD).</label>
+                    </div>
+
+                    <!-- Boutons -->
+                    <div style="display: flex; gap:1rem; justify-content: space-between; margin: 2rem 0;">
+                        <button type="button" class="btn btn-outline" onclick="analyserFicheJuridique()">🔍 Analyser la situation</button>
+                        <div>
+                            <button type="button" class="btn btn-outline" onclick="closeFicheJuridique()">Annuler</button>
+                            <button type="submit" class="btn btn-primary">Enregistrer la fiche</button>
+                        </div>
+                    </div>
+
+                    <!-- Zone rapport juridique -->
+                    <div id="rapport-juridique"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== MODALE FIN DE SESSION ========== -->
+    <div id="modal-logout" class="modal-overlay hidden">
+        <div class="modal-container" style="max-width:480px; text-align:center; padding:2rem;">
+            <h2 style="color: var(--lge-green); font-weight:800; margin-bottom:1rem;">Session terminée</h2>
+            <p id="logout-summary" style="margin-bottom:2rem; color:var(--text-secondary);"></p>
+            <button class="btn btn-primary" onclick="fermerTout()">Retour à l'accueil</button>
+        </div>
+    </div>
+
+    <script>
+        // ================== CONFIG ==================
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLk1Wryy2yGnr5qp3FcaqnWX319DiLIh_wzXXky5SINwElHG31tDOQUXgHRMDP_4zz/exec";
+
+        // ================== GESTION DE L'HORLOGE ==================
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('date-now').innerText = now.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
+            document.getElementById('time-now').innerText = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
         }
-    }
+        setInterval(updateClock, 1000);
 
-    // ========== NAVIGATION PAR ONGLETS ==========
-    function switchTab(tabId) {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-        document.querySelector(`.tab[data-tab="${tabId}"]`).classList.add('active');
-        document.getElementById(`tab-${tabId}`).classList.remove('hidden');
-    }
-
-    // ========== CHANGER DE PERMANENCE SANS DÉCONNEXION ==========
-    function changerPermanence() {
-        // Retour à l'écran de connexion sans effacer les données (pour pouvoir relancer)
-        document.getElementById('dashboard').classList.add('hidden');
-        document.getElementById('login-screen').classList.remove('hidden');
-        // On peut pré-remplir l'email si souhaité
-        document.getElementById('email-input').value = localStorage.getItem('lge_email') || '';
-    }
-
-    // ========== FICHE CONTACT ==========
-    // ... fonctions openFicheContact, closeFicheContact, resetFicheContact, categorieChange, submitFicheContact (à copier depuis le code précédent) ...
-
-    // ========== FICHE MOBILE JURIDIQUE ==========
-    // ... fonctions openFicheMobile, closeFicheMobile, submitFicheMobile, analyserFicheMobile (à copier depuis le code précédent) ...
-
-    // ========== FICHE JURIDIQUE APPROFONDIE ==========
-    function openFicheJuridique() {
-        document.getElementById('form-fiche-juridique').reset();
-        // Réinitialiser tous les checkbox
-        document.querySelectorAll('#form-fiche-juridique input[type="checkbox"]').forEach(cb => cb.checked = false);
-        // Réinitialiser bien-être
-        document.getElementById('bienetre-juridique').value = '';
-        document.getElementById('bienetre-juridique-details').value = '';
-        document.getElementById('bienetre-reco-juridique').innerHTML = '';
-        document.querySelectorAll('#bienetre-emojis-juridique .emoji-option').forEach(el => el.classList.remove('selected'));
-        document.getElementById('rapport-juridique').innerHTML = '';
-        document.getElementById('modal-fiche-juridique').classList.remove('hidden');
-    }
-    function closeFicheJuridique() {
-        document.getElementById('modal-fiche-juridique').classList.add('hidden');
-    }
-    function analyserFicheJuridique() {
-        const donnees = {
-            theme: "Juridique",
-            objet: document.getElementById('juridique-resume-auto')?.value || '',
-            situation_admin: document.getElementById('juridique-nationalite')?.value || ''
-        };
-        const rapport = analyserSituationJuridique(donnees);
-        afficherRapport(rapport, 'rapport-juridique');
-    }
-    async function submitFicheJuridique(e) {
-        e.preventDefault();
-        // Construire l'objet payload avec tous les champs (très long, à implémenter)
-        // Pour gagner de la place, je ne réécris pas ici les 90+ champs, mais vous devez les récupérer comme dans le message précédent.
-        // Exemple :
-        const payload = {
-            type_permanence: 'juridique',
-            nom: document.getElementById('juridique-nom')?.value || '',
-            prenom: document.getElementById('juridique-prenom')?.value || '',
-            // ... tous les autres champs
-            bienetre: document.getElementById('bienetre-juridique')?.value || '',
-            bienetre_details: document.getElementById('bienetre-juridique-details')?.value || '',
-            benevole_session: localStorage.getItem('lge_email'),
-            start_session: localStorage.getItem('lge_start')
-        };
-        try {
-            const response = await fetch(APPS_SCRIPT_URL, { method:'POST', body:JSON.stringify(payload) });
-            const result = await response.text();
-            alert('Fiche juridique enregistrée !');
-            closeFicheJuridique();
-        } catch(err) { alert('Erreur : '+err.message); }
-    }
-
-    // ========== BIEN-ÊTRE (fonction commune) ==========
-    function selectionnerEmotion(formType, value) {
-        document.getElementById(`bienetre-${formType}`).value = value;
-        const row = document.getElementById(`bienetre-emojis-${formType}`);
-        row.querySelectorAll('.emoji-option').forEach(el => el.classList.remove('selected'));
-        event.currentTarget.classList.add('selected');
-        genererRecommandationsBienetre(formType, value);
-    }
-    function genererRecommandationsBienetre(formType, niveau) {
-        const recoDiv = document.getElementById(`bienetre-reco-${formType}`);
-        let message = '';
-        switch(niveau) {
-            case 'tres-bien': case 'bien':
-                message = `<p><strong>👍 C'est une bonne nouvelle !</strong> Activités proposées : atelier bien-être, sortie conviviale, activités créatives.</p>`;
-                break;
-            case 'neutre':
-                message = `<p><strong>🧘 Un petit boost ?</strong> Atelier mieux-être, groupe de parole, yoga.</p>`;
-                break;
-            case 'mal': case 'tres-mal':
-                message = `<p><strong>🆘 Des ressources disponibles :</strong> CARELINE (07 84 81 20 30), permanence psychologique, 3114, 3919.</p>`;
-                break;
-            default: message = '<p>Sélectionnez une émotion.</p>';
+        // ================== CONNEXION / SESSION ==================
+        function demarrerPermanence(e) {
+            e.preventDefault();
+            const email = document.getElementById('email-input').value.trim();
+            const type = document.getElementById('permanence-type').value;
+            if (!email.includes('@')) {
+                alert("Veuillez entrer un email valide.");
+                return;
+            }
+            const now = new Date();
+            localStorage.setItem('lge_email', email);
+            localStorage.setItem('lge_start', now.toISOString());
+            localStorage.setItem('lge_type', type);
+            lancerInterface(email, now, type);
         }
-        recoDiv.innerHTML = message;
-    }
 
-    // ========== ASSISTANT JURIDIQUE ==========
-    const baseConnaissances = { /* ... copier depuis le code précédent ... */ };
-    function analyserSituationJuridique(donnees) {
-        // ... copier la fonction existante ...
-    }
-    function afficherRapport(rapport, elementId) {
-        // ... copier la fonction existante ...
-    }
+        function lancerInterface(email, start, type) {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            document.getElementById('user-display').innerText = email;
+            document.getElementById('start-time-display').innerText = start.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('permanence-type-display').innerText = type === 'classique' ? 'Classique' : 'Mobile Juridique';
 
-    // ========== FIN DE SESSION ==========
-    function confirmerDeconnexion() {
-        const start = new Date(localStorage.getItem('lge_start'));
-        const end = new Date();
-        const diff = Math.floor((end-start)/1000);
-        const heures = Math.floor(diff/3600);
-        const minutes = Math.floor((diff%3600)/60);
-        document.getElementById('logout-summary').innerText = `Bénévole : ${localStorage.getItem('lge_email')}\nDurée : ${heures}h ${minutes}min`;
-        document.getElementById('modal-logout').classList.remove('hidden');
-        fetch(APPS_SCRIPT_URL, {
-            method:'POST',
-            body:JSON.stringify({ type:'fin_session', email:localStorage.getItem('lge_email'), start:start.toISOString(), end:end.toISOString(), duree:`${heures}h${minutes}` })
-        }).catch(()=>{});
-    }
-    function fermerTout() { localStorage.clear(); location.reload(); }
+            if (type === 'classique') {
+                switchTab('classique');
+            } else {
+                switchTab('mobile');
+            }
+        }
 
-    // ========== INIT ==========
-    window.onload = function() {
-        updateClock();
-        const email = localStorage.getItem('lge_email');
-        if (email) {
+        // ================== NAVIGATION PAR ONGLETS ==================
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            document.querySelector(`.tab[data-tab="${tabId}"]`).classList.add('active');
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+        }
+
+        // ================== CHANGER DE PERMANENCE ==================
+        function changerPermanence() {
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('email-input').value = localStorage.getItem('lge_email') || '';
+        }
+
+        // ================== FICHE CONTACT ==================
+        function openFicheContact() {
+            document.getElementById('contact-id').value = 'FC-' + Date.now().toString().slice(-8);
+            resetFicheContact();
+            document.getElementById('form-fiche-contact').reset();
+            document.getElementById('contact-categorie').value = '';
+            document.getElementById('section-beneficiaire').classList.add('hidden');
+            document.getElementById('section-partenaire').classList.add('hidden');
+            document.getElementById('section-benevole').classList.add('hidden');
+            document.getElementById('section-information').classList.add('hidden');
+            document.getElementById('prev-id-container').classList.add('hidden');
+            // Réinitialiser la section bien-être
+            document.getElementById('bienetre-contact').value = '';
+            document.getElementById('bienetre-contact-details').value = '';
+            document.getElementById('bienetre-reco-contact').innerHTML = '';
+            document.querySelectorAll('#bienetre-emojis-contact .emoji-option').forEach(el => el.classList.remove('selected'));
+            document.getElementById('modal-fiche-contact').classList.remove('hidden');
+        }
+
+        function resetFicheContact() {
+            document.getElementById('benef-situation-pro').value = '';
+            document.getElementById('benef-ressources').value = 'Aucune';
+            document.getElementById('benef-enfants').value = '0';
+            document.getElementById('benef-situation-admin').value = '';
+            document.getElementById('benef-demande').value = '';
+            document.getElementById('benef-orientation').value = '';
+            document.getElementById('benef-urgence').value = 'Faible';
+            document.getElementById('partenaire-structure').value = '';
+            document.getElementById('partenaire-type').value = 'Association';
+            document.getElementById('partenaire-contact').value = '';
+            document.getElementById('partenaire-nature').value = '';
+            document.getElementById('benevole-age').value = '';
+            document.getElementById('benevole-competences').value = '';
+            document.getElementById('benevole-dispo').value = '';
+            document.getElementById('benevole-mission').value = 'Accueil / Administration';
+            document.getElementById('info-sujet').value = '';
+            document.getElementById('info-reponse').value = '';
+        }
+
+        function closeFicheContact() {
+            document.getElementById('modal-fiche-contact').classList.add('hidden');
+        }
+
+        function categorieChange() {
+            const cat = document.getElementById('contact-categorie').value;
+            document.getElementById('section-beneficiaire').classList.add('hidden');
+            document.getElementById('section-partenaire').classList.add('hidden');
+            document.getElementById('section-benevole').classList.add('hidden');
+            document.getElementById('section-information').classList.add('hidden');
+            if (cat === 'beneficiaire') {
+                document.getElementById('section-beneficiaire').classList.remove('hidden');
+            } else if (cat === 'partenaire') {
+                document.getElementById('section-partenaire').classList.remove('hidden');
+            } else if (cat === 'benevole') {
+                document.getElementById('section-benevole').classList.remove('hidden');
+            } else if (cat === 'information') {
+                document.getElementById('section-information').classList.remove('hidden');
+            }
+        }
+
+        document.getElementById('contact-nature')?.addEventListener('change', function(e) {
+            const container = document.getElementById('prev-id-container');
+            container.classList.toggle('hidden', e.target.value !== 'Suivi');
+        });
+
+        async function submitFicheContact(e) {
+            e.preventDefault();
+            const payload = {
+                type_permanence: 'classique',
+                fiche_id: document.getElementById('contact-id').value,
+                nature: document.getElementById('contact-nature').value,
+                dossier_precedent: document.getElementById('contact-prev-id').value || '',
+                categorie: document.getElementById('contact-categorie').value,
+                nom: document.getElementById('contact-nom').value,
+                telephone: document.getElementById('contact-tel').value,
+                email: document.getElementById('contact-email').value,
+                bienetre: document.getElementById('bienetre-contact').value,
+                bienetre_details: document.getElementById('bienetre-contact-details').value,
+                benevole: localStorage.getItem('lge_email'),
+                start_session: localStorage.getItem('lge_start')
+            };
+
+            const cat = payload.categorie;
+            if (cat === 'beneficiaire') {
+                payload.situation_pro = document.getElementById('benef-situation-pro').value;
+                payload.ressources = document.getElementById('benef-ressources').value;
+                payload.enfants = document.getElementById('benef-enfants').value;
+                payload.situation_admin = document.getElementById('benef-situation-admin').value;
+                payload.demande = document.getElementById('benef-demande').value;
+                payload.orientation = document.getElementById('benef-orientation').value;
+                payload.urgence = document.getElementById('benef-urgence').value;
+            } else if (cat === 'partenaire') {
+                payload.structure = document.getElementById('partenaire-structure').value;
+                payload.type_structure = document.getElementById('partenaire-type').value;
+                payload.contact_partenaire = document.getElementById('partenaire-contact').value;
+                payload.nature_partenariat = document.getElementById('partenaire-nature').value;
+            } else if (cat === 'benevole') {
+                payload.age = document.getElementById('benevole-age').value;
+                payload.competences = document.getElementById('benevole-competences').value;
+                payload.disponibilites = document.getElementById('benevole-dispo').value;
+                payload.mission = document.getElementById('benevole-mission').value;
+            } else if (cat === 'information') {
+                payload.sujet = document.getElementById('info-sujet').value;
+                payload.reponse = document.getElementById('info-reponse').value;
+            }
+
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.text();
+                console.log('Réponse serveur :', result);
+                alert('Fiche enregistrée avec succès !');
+                closeFicheContact();
+            } catch (err) {
+                alert('Erreur lors de l\'envoi : ' + err.message);
+            }
+        }
+
+        // ================== FICHE MOBILE JURIDIQUE ==================
+        function openFicheMobile() {
+            document.getElementById('mobile-id').value = 'MJ-' + Date.now().toString().slice(-8);
+            document.getElementById('form-fiche-mobile').reset();
+            
+            // Réinitialiser les champs spécifiques
+            document.getElementById('mobile-nature').value = 'Premier contact';
+            document.getElementById('mobile-situation-pro').value = 'Sans emploi';
+            document.getElementById('mobile-enfants').value = '0';
+            document.getElementById('mobile-situation-admin').value = '';
+            document.getElementById('mobile-ressources').value = 'Aucune';
+            document.getElementById('mobile-theme').value = 'Famille';
+            document.getElementById('mobile-urgence').value = 'Faible';
+            document.getElementById('mobile-rgpd').value = 'Consentement recueilli';
+            document.getElementById('mobile-prev-container').classList.add('hidden');
+            // Réinitialiser la section bien-être mobile
+            document.getElementById('bienetre-mobile').value = '';
+            document.getElementById('bienetre-mobile-details').value = '';
+            document.getElementById('bienetre-reco-mobile').innerHTML = '';
+            document.querySelectorAll('#bienetre-emojis-mobile .emoji-option').forEach(el => el.classList.remove('selected'));
+            // Effacer le rapport précédent
+            document.getElementById('rapport-mobile').innerHTML = '';
+            
+            document.getElementById('modal-fiche-mobile').classList.remove('hidden');
+        }
+
+        function closeFicheMobile() {
+            document.getElementById('modal-fiche-mobile').classList.add('hidden');
+            document.getElementById('rapport-mobile').innerHTML = '';
+        }
+
+        document.getElementById('mobile-nature')?.addEventListener('change', function(e) {
+            const container = document.getElementById('mobile-prev-container');
+            container.classList.toggle('hidden', e.target.value !== 'Suivi');
+        });
+
+        async function submitFicheMobile(e) {
+            e.preventDefault();
+            const payload = {
+                type_permanence: 'mobile_juridique',
+                fiche_id: document.getElementById('mobile-id').value,
+                nature: document.getElementById('mobile-nature').value,
+                dossier_precedent: document.getElementById('mobile-prev-id').value || '',
+                intervenant: document.getElementById('mobile-intervenant').value,
+                nom: document.getElementById('mobile-nom').value,
+                telephone: document.getElementById('mobile-tel').value,
+                email: document.getElementById('mobile-email').value,
+                situation_pro: document.getElementById('mobile-situation-pro').value,
+                enfants: document.getElementById('mobile-enfants').value,
+                situation_admin: document.getElementById('mobile-situation-admin').value,
+                ressources: document.getElementById('mobile-ressources').value,
+                theme: document.getElementById('mobile-theme').value,
+                objet: document.getElementById('mobile-objet').value,
+                analyse: document.getElementById('mobile-analyse').value,
+                etapes: document.getElementById('mobile-etapes').value,
+                aj: document.getElementById('mobile-aj').value,
+                relais: document.getElementById('mobile-relais').value,
+                urgence: document.getElementById('mobile-urgence').value,
+                rgpd: document.getElementById('mobile-rgpd').value,
+                bienetre: document.getElementById('bienetre-mobile').value,
+                bienetre_details: document.getElementById('bienetre-mobile-details').value,
+                benevole: localStorage.getItem('lge_email'),
+                start_session: localStorage.getItem('lge_start')
+            };
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.text();
+                console.log('Réponse serveur :', result);
+                alert('Dossier transmis !');
+                closeFicheMobile();
+            } catch (err) {
+                alert('Erreur : ' + err.message);
+            }
+        }
+
+        // ================== FICHE JURIDIQUE APPROFONDIE ==================
+        function openFicheJuridique() {
+            document.getElementById('form-fiche-juridique').reset();
+            // Réinitialiser les checkbox (reset ne les remet pas à false)
+            document.querySelectorAll('#form-fiche-juridique input[type="checkbox"]').forEach(cb => cb.checked = false);
+            // Réinitialiser bien-être
+            document.getElementById('bienetre-juridique').value = '';
+            document.getElementById('bienetre-juridique-details').value = '';
+            document.getElementById('bienetre-reco-juridique').innerHTML = '';
+            document.querySelectorAll('#bienetre-emojis-juridique .emoji-option').forEach(el => el.classList.remove('selected'));
+            document.getElementById('rapport-juridique').innerHTML = '';
+            document.getElementById('modal-fiche-juridique').classList.remove('hidden');
+        }
+
+        function closeFicheJuridique() {
+            document.getElementById('modal-fiche-juridique').classList.add('hidden');
+        }
+
+        async function submitFicheJuridique(e) {
+            e.preventDefault();
+            const payload = {
+                type_permanence: 'juridique',
+                // Identité
+                nom: document.getElementById('juridique-nom')?.value || '',
+                prenom: document.getElementById('juridique-prenom')?.value || '',
+                date_naissance: document.getElementById('juridique-date-naissance')?.value || '',
+                lieu_naissance: document.getElementById('juridique-lieu-naissance')?.value || '',
+                nationalite: document.getElementById('juridique-nationalite')?.value || '',
+                pays_provenance: document.getElementById('juridique-pays-provenance')?.value || '',
+                telephone: document.getElementById('juridique-telephone')?.value || '',
+                email: document.getElementById('juridique-email')?.value || '',
+                // Situation
+                situation_logement: document.getElementById('juridique-logement')?.value || '',
+                arrivee_avec_visa: document.getElementById('juridique-arrivee-avec-visa')?.checked || false,
+                arrivee_sans_visa: document.getElementById('juridique-arrivee-sans-visa')?.checked || false,
+                date_entree: document.getElementById('juridique-date-entree')?.value || '',
+                frontiere_entree: document.getElementById('juridique-frontiere-entree')?.value || '',
+                visas_passes: document.getElementById('juridique-visas-passes')?.value || '',
+                conjoint_francais: document.getElementById('juridique-conjoint-francais')?.checked || false,
+                conjoint_etranger_regulier: document.getElementById('juridique-conjoint-regulier')?.checked || false,
+                conjoint_etranger_irregulier: document.getElementById('juridique-conjoint-irregulier')?.checked || false,
+                date_mariage: document.getElementById('juridique-date-mariage')?.value || '',
+                lieu_mariage: document.getElementById('juridique-lieu-mariage')?.value || '',
+                a_des_enfants: document.getElementById('juridique-a-enfants')?.checked || false,
+                enfants_nes_france: document.getElementById('juridique-enfants-nes-france')?.checked || false,
+                au_moins_un_enfant_francais: document.getElementById('juridique-enfant-francais')?.checked || false,
+                enfants_details: document.getElementById('juridique-enfants-details')?.value || '',
+                a_deja_eu_titre: document.getElementById('juridique-deja-titre')?.checked || false,
+                titres_precedents: document.getElementById('juridique-titres-precedents')?.value || '',
+                recipisse_en_cours: document.getElementById('juridique-recipisse')?.checked || false,
+                numero_recipisse: document.getElementById('juridique-numero-recipisse')?.value || '',
+                oqtf_recue: document.getElementById('juridique-oqtf-recue')?.checked || false,
+                date_oqtf: document.getElementById('juridique-date-oqtf')?.value || '',
+                recours_exerce: document.getElementById('juridique-recours-exerce')?.checked || false,
+                refus_sejour: document.getElementById('juridique-refus-sejour')?.checked || false,
+                date_refus: document.getElementById('juridique-date-refus')?.value || '',
+                motif_refus: document.getElementById('juridique-motif-refus')?.value || '',
+                convocation_prefecture: document.getElementById('juridique-convocation')?.checked || false,
+                date_convocation: document.getElementById('juridique-date-convocation')?.value || '',
+                numero_dossier_prefecture: document.getElementById('juridique-numero-dossier-pref')?.value || '',
+                autre_mesure: document.getElementById('juridique-autre-mesure')?.value || '',
+                // Travail
+                travail_declare: document.getElementById('juridique-travail-declare')?.checked || false,
+                travail_non_declare: document.getElementById('juridique-travail-non-declare')?.checked || false,
+                secteur_activite: document.getElementById('juridique-secteur-activite')?.value || '',
+                anciennete: document.getElementById('juridique-anciennete')?.value || '',
+                employeur: document.getElementById('juridique-employeur')?.value || '',
+                salaire: document.getElementById('juridique-salaire')?.value || '',
+                temps_travail: document.getElementById('juridique-temps-travail')?.value || '',
+                type_contrat: document.getElementById('juridique-type-contrat')?.value || '',
+                promesse_embauche: document.getElementById('juridique-promesse-embauche')?.checked || false,
+                preuves_travail: document.getElementById('juridique-preuves-travail')?.value || '',
+                // Violences
+                victime_violences: document.getElementById('juridique-victime-violences')?.checked || false,
+                auteur_violences: document.getElementById('juridique-auteur-violences')?.value || '',
+                nature_violences: document.getElementById('juridique-nature-violences')?.value || '',
+                periode_violences: document.getElementById('juridique-periode-violences')?.value || '',
+                plainte_deposee: document.getElementById('juridique-plainte')?.checked || false,
+                lieu_plainte: document.getElementById('juridique-lieu-plainte')?.value || '',
+                ordonnance_protection: document.getElementById('juridique-ordonnance-protection')?.checked || false,
+                juge_duree: document.getElementById('juridique-juge-duree')?.value || '',
+                certificats_medicaux: document.getElementById('juridique-certificats')?.checked || false,
+                dates_certificats: document.getElementById('juridique-dates-certificats')?.value || '',
+                separee_auteur: document.getElementById('juridique-separee')?.checked || false,
+                autres_preuves: document.getElementById('juridique-autres-preuves')?.value || '',
+                suivi_association: document.getElementById('juridique-suivi-association')?.value || '',
+                enfants_concernes: document.getElementById('juridique-enfants-concernes')?.checked || false,
+                parent_enfant_francais: document.getElementById('juridique-parent-enfant-francais')?.checked || false,
+                nom_enfant_francais: document.getElementById('juridique-nom-enfant-francais')?.value || '',
+                numero_carte_enfant: document.getElementById('juridique-numero-carte-enfant')?.value || '',
+                preuves_contribution: document.getElementById('juridique-preuves-contribution')?.value || '',
+                // Ancienneté / santé
+                presence_ancienne: document.getElementById('juridique-presence-ancienne')?.checked || false,
+                preuves_presence: document.getElementById('juridique-preuves-presence')?.value || '',
+                annees_manquantes: document.getElementById('juridique-annees-manquantes')?.value || '',
+                raisons_sante: document.getElementById('juridique-raisons-sante')?.checked || false,
+                maladie: document.getElementById('juridique-maladie')?.value || '',
+                suivi_medical: document.getElementById('juridique-suivi-medical')?.value || '',
+                certificat_impossibilite_soins: document.getElementById('juridique-certificat-impossibilite')?.checked || false,
+                // Asile
+                demande_asile: document.getElementById('juridique-demande-asile')?.checked || false,
+                date_depot_asile: document.getElementById('juridique-date-depot-asile')?.value || '',
+                decision_ofpra: document.getElementById('juridique-decision-ofpra')?.value || '',
+                // Liens France
+                liens_familiaux_france: document.getElementById('juridique-liens-familiaux')?.value || '',
+                integration: document.getElementById('juridique-integration')?.value || '',
+                // Urgence
+                urgence_oqtf: document.getElementById('juridique-urgence-oqtf')?.checked || false,
+                evaluation_danger: document.getElementById('juridique-evaluation-danger')?.value || '',
+                danger_immediat: document.getElementById('juridique-danger-immediat')?.checked || false,
+                mesures_protection: document.getElementById('juridique-mesures-protection')?.value || '',
+                hebergement_urgence_necessaire: document.getElementById('juridique-hebergement-urgence')?.checked || false,
+                contact_urgence: document.getElementById('juridique-contact-urgence')?.value || '',
+                // Synthèse
+                documents_resume: document.getElementById('juridique-documents-resume')?.value || '',
+                resume_automatique: document.getElementById('juridique-resume-auto')?.value || '',
+                orientation_proposee: document.getElementById('juridique-orientation')?.value || '',
+                notes_complementaires: document.getElementById('juridique-notes')?.value || '',
+                // Bien-être
+                bienetre: document.getElementById('bienetre-juridique')?.value || '',
+                bienetre_details: document.getElementById('bienetre-juridique-details')?.value || '',
+                // Bénévole et session
+                benevole_session: localStorage.getItem('lge_email'),
+                start_session: localStorage.getItem('lge_start')
+            };
+
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.text();
+                console.log('Réponse serveur :', result);
+                alert('Fiche juridique enregistrée !');
+                closeFicheJuridique();
+            } catch (err) {
+                alert('Erreur : ' + err.message);
+            }
+        }
+
+        // ================== SECTION BIEN-ÊTRE ==================
+        function selectionnerEmotion(formType, value) {
+            document.getElementById(`bienetre-${formType}`).value = value;
+            const row = document.getElementById(`bienetre-emojis-${formType}`);
+            row.querySelectorAll('.emoji-option').forEach(el => el.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            genererRecommandationsBienetre(formType, value);
+        }
+
+        function genererRecommandationsBienetre(formType, niveau) {
+            const recoDiv = document.getElementById(`bienetre-reco-${formType}`);
+            let message = '';
+            switch(niveau) {
+                case 'tres-bien':
+                case 'bien':
+                    message = `<p><strong>👍 C'est une bonne nouvelle !</strong> Activités proposées : atelier bien-être, sortie conviviale, activités créatives.</p>`;
+                    break;
+                case 'neutre':
+                    message = `<p><strong>🧘 Un petit boost ?</strong> Atelier mieux-être, groupe de parole, yoga.</p>`;
+                    break;
+                case 'mal':
+                case 'tres-mal':
+                    message = `<p><strong>🆘 Des ressources disponibles :</strong> CARELINE (07 84 81 20 30), permanence psychologique, 3114, 3919.</p>`;
+                    break;
+                default:
+                    message = '<p>Sélectionnez une émotion.</p>';
+            }
+            recoDiv.innerHTML = message;
+        }
+
+        // ================== ASSISTANT JURIDIQUE ==================
+        const baseConnaissances = {
+            etrangers: {
+                asile: {
+                    resume: "Demande d'asile : protection internationale.",
+                    loi: "La demande d'asile est régie par le CESEDA. L'OFPRA instruit les demandes.",
+                    pieces: [
+                        "Récépissé de demande d'asile",
+                        "Passeport",
+                        "Actes d'état civil traduits",
+                        "Preuves des persécutions"
+                    ],
+                    orientation: ["Consultez le site de l'OFPRA", "Contactez France Terre d'Asile"],
+                    sources: ["https://www.service-public.fr/particuliers/vosdroits/F2210"]
+                },
+                titre_sejour_violence: {
+                    resume: "Victime de violences conjugales demandant un titre de séjour.",
+                    loi: "Carte de séjour 'vie privée et familiale' possible pour les victimes (art. L. 425-6 CESEDA).",
+                    pieces: ["Plainte", "Ordonnance de protection", "Certificats médicaux", "Passeport"],
+                    orientation: ["Contactez le 3919", "Simulateur d'aide juridictionnelle"],
+                    sources: ["https://www.service-public.fr/particuliers/vosdroits/F2881"]
+                }
+            },
+            famille: {
+                divorce: {
+                    resume: "Procédure de divorce.",
+                    loi: "Le divorce peut être prononcé par consentement mutuel, acceptation, altération du lien conjugal, ou faute.",
+                    pieces: ["Acte de mariage", "Livret de famille", "Contrat de mariage", "Justificatifs de revenus"],
+                    orientation: ["Consultez un avocat", "Point-Justice", "Simulateur de pension alimentaire"],
+                    sources: ["https://www.service-public.fr/particuliers/vosdroits/F1074"]
+                }
+            },
+            travail: {
+                licenciement: {
+                    resume: "Litige lié à un licenciement.",
+                    loi: "Le licenciement doit être justifié par une cause réelle et sérieuse.",
+                    pieces: ["Lettre de licenciement", "Contrat", "Bulletins de salaire"],
+                    orientation: ["Avocat droit du travail", "Conseil de prud'hommes"],
+                    sources: ["https://www.service-public.fr/particuliers/vosdroits/F115"]
+                }
+            },
+            logement: {
+                impayes: {
+                    resume: "Impayés de loyer, risque d'expulsion.",
+                    loi: "Le propriétaire doit délivrer un commandement de payer. Trêve hivernale de novembre à mars.",
+                    pieces: ["Bail", "Quittances", "Commandement de payer"],
+                    orientation: ["CAF (APL)", "FSL", "ADIL"],
+                    sources: ["https://www.service-public.fr/particuliers/vosdroits/F134"]
+                }
+            }
+        };
+
+        function analyserSituationJuridique(donnees) {
+            let rapport = { resume: "", loi: "", pieces: [], orientation: [], sources: [] };
+            const theme = donnees.theme || "";
+            const objet = (donnees.objet || "").toLowerCase();
+            const situationAdmin = donnees.situation_admin || "";
+            const motsCles = objet + " " + theme + " " + situationAdmin;
+
+            if (theme === "Étrangers") {
+                if (situationAdmin === "Demande d'asile" || motsCles.includes("asile")) {
+                    rapport = { ...rapport, ...baseConnaissances.etrangers.asile };
+                    rapport.sources.push("CESEDA - Articles L. 511-1 et suivants");
+                } else if (motsCles.includes("violence") || motsCles.includes("victime")) {
+                    rapport = { ...rapport, ...baseConnaissances.etrangers.titre_sejour_violence };
+                    rapport.sources.push("CESEDA - Article L. 425-6");
+                }
+            } else if (theme === "Famille") {
+                if (motsCles.includes("divorce")) {
+                    rapport = { ...rapport, ...baseConnaissances.famille.divorce };
+                } else if (motsCles.includes("enfant") || motsCles.includes("garde")) {
+                    rapport = { ...rapport, ...baseConnaissances.famille.enfant };
+                }
+            } else if (theme === "Travail") {
+                if (motsCles.includes("licenciement")) {
+                    rapport = { ...rapport, ...baseConnaissances.travail.licenciement };
+                }
+            } else if (theme === "Logement") {
+                if (motsCles.includes("impayé") || motsCles.includes("expulsion")) {
+                    rapport = { ...rapport, ...baseConnaissances.logement.impayes };
+                }
+            }
+
+            if (!rapport.loi) {
+                rapport.resume = "Situation non spécifique. Consultez les sources générales.";
+                rapport.pieces = ["Identité, justificatifs de situation, documents relatifs à l'objet."];
+                rapport.orientation = ["Point-Justice : annuaires.justice.fr", "Numéro d'accès au droit : 30 39"];
+                rapport.sources = ["https://www.service-public.fr/", "https://www.legifrance.gouv.fr/"];
+            }
+            return rapport;
+        }
+
+        function afficherRapport(rapport, elementId) {
+            const container = document.getElementById(elementId);
+            if (!container) return;
+            let html = '<div class="rapport-juridique">';
+            html += `<h4>📋 Résumé</h4><p>${rapport.resume}</p>`;
+            if (rapport.loi) html += `<h4>⚖️ Loi</h4><p>${rapport.loi}</p>`;
+            if (rapport.pieces && rapport.pieces.length) {
+                html += `<h4>📎 Pièces</h4><ul>${rapport.pieces.map(p => `<li>${p}</li>`).join('')}</ul>`;
+            }
+            if (rapport.orientation && rapport.orientation.length) {
+                html += `<h4>🗺️ Orientations</h4><ul>${rapport.orientation.map(o => `<li>${o}</li>`).join('')}</ul>`;
+            }
+            if (rapport.sources && rapport.sources.length) {
+                html += `<div class="source"><strong>Sources :</strong><ul>${rapport.sources.map(s => `<li><a href="${s}" target="_blank">${s}</a></li>`).join('')}</ul></div>`;
+            }
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function analyserFicheMobile() {
+            const donnees = {
+                theme: document.getElementById('mobile-theme').value,
+                objet: document.getElementById('mobile-objet').value,
+                situation_admin: document.getElementById('mobile-situation-admin').value
+            };
+            const rapport = analyserSituationJuridique(donnees);
+            afficherRapport(rapport, 'rapport-mobile');
+        }
+
+        function analyserFicheJuridique() {
+            const donnees = {
+                theme: "Juridique",
+                objet: document.getElementById('juridique-resume-auto')?.value || '',
+                situation_admin: document.getElementById('juridique-nationalite')?.value || ''
+            };
+            const rapport = analyserSituationJuridique(donnees);
+            afficherRapport(rapport, 'rapport-juridique');
+        }
+
+        // ================== FIN DE SESSION ==================
+        function confirmerDeconnexion() {
             const start = new Date(localStorage.getItem('lge_start'));
-            const type = localStorage.getItem('lge_type');
-            lancerInterface(email, start, type);
+            const end = new Date();
+            const diff = Math.floor((end - start) / 1000);
+            const heures = Math.floor(diff / 3600);
+            const minutes = Math.floor((diff % 3600) / 60);
+            const resume = `Bénévole : ${localStorage.getItem('lge_email')}\nDurée : ${heures}h ${minutes}min`;
+            document.getElementById('logout-summary').innerText = resume;
+            document.getElementById('modal-logout').classList.remove('hidden');
+
+            fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({
+                    type: 'fin_session',
+                    email: localStorage.getItem('lge_email'),
+                    start: start.toISOString(),
+                    end: end.toISOString(),
+                    duree: `${heures}h${minutes}`
+                })
+            }).catch(err => console.log('Fin session loggée'));
         }
-    };
-</script>
+
+        function fermerTout() {
+            localStorage.clear();
+            location.reload();
+        }
+
+        // ================== RÉINITIALISATION AU CHARGEMENT ==================
+        window.onload = function() {
+            updateClock();
+            const email = localStorage.getItem('lge_email');
+            if (email) {
+                const start = new Date(localStorage.getItem('lge_start'));
+                const type = localStorage.getItem('lge_type');
+                lancerInterface(email, start, type);
+            }
+        };
+    </script>
 </body>
 </html>
